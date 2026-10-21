@@ -1,0 +1,607 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "A5-pocket-screws",
+ "section": "A5",
+ "title": "Pocket screws",
+ "summary": "Two pocket screws per apron end, drilled at 15° from the inside face.",
+ "size": "coffee table",
+ "params": [
+  {
+   "name": "leg_sq",
+   "value": 44.45,
+   "unit": "mm",
+   "note": "Leg size at the head"
+  },
+  {
+   "name": "apron_h",
+   "value": 76.2,
+   "unit": "mm",
+   "note": "Apron height"
+  },
+  {
+   "name": "apron_t",
+   "value": 19.05,
+   "unit": "mm",
+   "note": "Apron thickness"
+  },
+  {
+   "name": "apron_set",
+   "value": 6.35,
+   "unit": "mm",
+   "note": "Apron set back from the leg's outside face"
+  },
+  {
+   "name": "angle",
+   "value": 15,
+   "unit": "deg",
+   "note": "Pocket angle"
+  },
+  {
+   "name": "screw_l",
+   "value": 32,
+   "unit": "mm",
+   "note": "Screw length (#8 × 1¼ in)"
+  },
+  {
+   "name": "count",
+   "value": 2,
+   "unit": "",
+   "note": "per apron end"
+  }
+ ],
+ "notes": [],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 0,
+        "loop": {
+         "kind": "rect",
+         "cx": 492.125,
+         "cy": -200.025,
+         "w": 25.4,
+         "h": 25.4
+        }
+       },
+       {
+        "z": 304.8,
+        "loop": {
+         "kind": "rect",
+         "cx": 482.6,
+         "cy": -190.5,
+         "w": 44.45,
+         "h": 44.45
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       460.375,
+       -212.725,
+       304.8
+      ],
+      "max": [
+       504.825,
+       -168.275,
+       381
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       459.892037,
+       -196.72059,
+       324.9
+      ],
+      "p1": [
+       476.795739,
+       -201.249924,
+       324.9
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       459.892037,
+       -196.72059,
+       360.9
+      ],
+      "p1": [
+       476.795739,
+       -201.249924,
+       360.9
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       488.82059,
+       -167.792037,
+       324.9
+      ],
+      "p1": [
+       493.349924,
+       -184.695739,
+       324.9
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       488.82059,
+       -167.792037,
+       360.9
+      ],
+      "p1": [
+       493.349924,
+       -184.695739,
+       360.9
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-front",
+   "name": "Long apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -160,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       0,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       444.920187,
+       -192.708895,
+       324.9
+      ],
+      "p1": [
+       402.41945,
+       -181.320857,
+       324.9
+      ],
+      "r0": 4.75,
+      "r1": 4.75
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       461.340926,
+       -197.108819,
+       324.9
+      ],
+      "p1": [
+       443.954261,
+       -192.450076,
+       324.9
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       444.920187,
+       -192.708895,
+       360.9
+      ],
+      "p1": [
+       402.41945,
+       -181.320857,
+       360.9
+      ],
+      "r0": 4.75,
+      "r1": 4.75
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       461.340926,
+       -197.108819,
+       360.9
+      ],
+      "p1": [
+       443.954261,
+       -192.450076,
+       360.9
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-right",
+   "name": "Short apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -140,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       0,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       484.808895,
+       -152.820187,
+       324.9
+      ],
+      "p1": [
+       473.420857,
+       -110.31945,
+       324.9
+      ],
+      "r0": 4.75,
+      "r1": 4.75
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       489.208819,
+       -169.240926,
+       324.9
+      ],
+      "p1": [
+       484.550076,
+       -151.854261,
+       324.9
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       484.808895,
+       -152.820187,
+       360.9
+      ],
+      "p1": [
+       473.420857,
+       -110.31945,
+       360.9
+      ],
+      "r0": 4.75,
+      "r1": 4.75
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       489.208819,
+       -169.240926,
+       360.9
+      ],
+      "p1": [
+       484.550076,
+       -151.854261,
+       360.9
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "pocket-screw-long-1",
+   "name": "Pocket screw #8 × 1¼",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       444.920187,
+       -192.708895,
+       324.9
+      ],
+      "p1": [
+       475.829813,
+       -200.991105,
+       324.9
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       442.022409,
+       -191.932438,
+       324.9
+      ],
+      "p1": [
+       444.920187,
+       -192.708895,
+       324.9
+      ],
+      "r0": 4.4,
+      "r1": 4.4
+     }
+    }
+   ]
+  },
+  {
+   "id": "pocket-screw-long-2",
+   "name": "Pocket screw #8 × 1¼",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       444.920187,
+       -192.708895,
+       360.9
+      ],
+      "p1": [
+       475.829813,
+       -200.991105,
+       360.9
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       442.022409,
+       -191.932438,
+       360.9
+      ],
+      "p1": [
+       444.920187,
+       -192.708895,
+       360.9
+      ],
+      "r0": 4.4,
+      "r1": 4.4
+     }
+    }
+   ]
+  },
+  {
+   "id": "pocket-screw-short-1",
+   "name": "Pocket screw #8 × 1¼",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       484.808895,
+       -152.820187,
+       324.9
+      ],
+      "p1": [
+       493.091105,
+       -183.729813,
+       324.9
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       484.032438,
+       -149.922409,
+       324.9
+      ],
+      "p1": [
+       484.808895,
+       -152.820187,
+       324.9
+      ],
+      "r0": 4.4,
+      "r1": 4.4
+     }
+    }
+   ]
+  },
+  {
+   "id": "pocket-screw-short-2",
+   "name": "Pocket screw #8 × 1¼",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       484.808895,
+       -152.820187,
+       360.9
+      ],
+      "p1": [
+       493.091105,
+       -183.729813,
+       360.9
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       484.032438,
+       -149.922409,
+       360.9
+      ],
+      "p1": [
+       484.808895,
+       -152.820187,
+       360.9
+      ],
+      "r0": 4.4,
+      "r1": 4.4
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "pocket-screw",
+   "parts": [
+    "apron-front",
+    "leg-front-right"
+   ],
+   "via": [
+    "pocket-screw-long-1",
+    "pocket-screw-long-2"
+   ]
+  },
+  {
+   "type": "pocket-screw",
+   "parts": [
+    "apron-right",
+    "leg-front-right"
+   ],
+   "via": [
+    "pocket-screw-short-1",
+    "pocket-screw-short-2"
+   ]
+  }
+ ]
+}

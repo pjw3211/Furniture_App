@@ -1,0 +1,623 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "A2-loose-tenon-side",
+ "section": "A2",
+ "title": "Loose tenons (side table, staggered)",
+ "summary": "One Domino per apron end. The thinner leg means the two slots would meet, so they are staggered in height.",
+ "size": "side table",
+ "params": [
+  {
+   "name": "leg_sq",
+   "value": 38.1,
+   "unit": "mm",
+   "note": "Leg size at the head"
+  },
+  {
+   "name": "apron_h",
+   "value": 63.5,
+   "unit": "mm",
+   "note": "Apron height"
+  },
+  {
+   "name": "apron_t",
+   "value": 19.05,
+   "unit": "mm",
+   "note": "Apron thickness"
+  },
+  {
+   "name": "apron_set",
+   "value": 6.35,
+   "unit": "mm",
+   "note": "Apron set back from the leg's outside face"
+  },
+  {
+   "name": "tenon",
+   "value": 8,
+   "unit": "mm",
+   "note": "Domino 8 × 22 × 40"
+  },
+  {
+   "name": "count",
+   "value": 1,
+   "unit": "",
+   "note": "per apron end"
+  },
+  {
+   "name": "stagger",
+   "value": 24,
+   "unit": "mm",
+   "note": "Height difference between the two aprons' tenons"
+  }
+ ],
+ "notes": [],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 0,
+        "loop": {
+         "kind": "circle",
+         "cx": 177.8,
+         "cy": -177.8,
+         "r": 9.525
+        }
+       },
+       {
+        "z": 457.2,
+        "loop": {
+         "kind": "circle",
+         "cx": 177.8,
+         "cy": -177.8,
+         "r": 19.05
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       158.75,
+       -196.85,
+       457.2
+      ],
+      "max": [
+       196.85,
+       -158.75,
+       533.4
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -4.05,
+        506.65
+       ],
+       "segs": [
+        {
+         "to": [
+          -4.05,
+          520.65
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          520.65
+         ],
+         "via": [
+          0,
+          524.7
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          506.65
+         ]
+        },
+        {
+         "to": [
+          -4.05,
+          506.65
+         ],
+         "via": [
+          0,
+          502.6
+         ]
+        }
+       ]
+      },
+      "z0": -0.5,
+      "z1": 21,
+      "frame": {
+       "o": [
+        158.75,
+        -180.975,
+        0
+       ],
+       "x": [
+        0,
+        1,
+        0
+       ],
+       "z": [
+        1,
+        0,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -4.05,
+        482.65
+       ],
+       "segs": [
+        {
+         "to": [
+          -4.05,
+          496.65
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          496.65
+         ],
+         "via": [
+          0,
+          500.7
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          482.65
+         ]
+        },
+        {
+         "to": [
+          -4.05,
+          482.65
+         ],
+         "via": [
+          0,
+          478.6
+         ]
+        }
+       ]
+      },
+      "z0": -0.5,
+      "z1": 21,
+      "frame": {
+       "o": [
+        180.975,
+        -158.75,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        -1,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-front",
+   "name": "Long apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -120,
+       -9.525,
+       469.9
+      ],
+      "max": [
+       0,
+       9.525,
+       533.4
+      ],
+      "frame": {
+       "o": [
+        158.75,
+        -180.975,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -4.05,
+        506.65
+       ],
+       "segs": [
+        {
+         "to": [
+          -4.05,
+          520.65
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          520.65
+         ],
+         "via": [
+          0,
+          524.7
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          506.65
+         ]
+        },
+        {
+         "to": [
+          -4.05,
+          506.65
+         ],
+         "via": [
+          0,
+          502.6
+         ]
+        }
+       ]
+      },
+      "z0": -21,
+      "z1": 0.5,
+      "frame": {
+       "o": [
+        158.75,
+        -180.975,
+        0
+       ],
+       "x": [
+        0,
+        1,
+        0
+       ],
+       "z": [
+        1,
+        0,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-right",
+   "name": "Short apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -120,
+       -9.525,
+       469.9
+      ],
+      "max": [
+       0,
+       9.525,
+       533.4
+      ],
+      "frame": {
+       "o": [
+        180.975,
+        -158.75,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -4.05,
+        482.65
+       ],
+       "segs": [
+        {
+         "to": [
+          -4.05,
+          496.65
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          496.65
+         ],
+         "via": [
+          0,
+          500.7
+         ]
+        },
+        {
+         "to": [
+          4.05,
+          482.65
+         ]
+        },
+        {
+         "to": [
+          -4.05,
+          482.65
+         ],
+         "via": [
+          0,
+          478.6
+         ]
+        }
+       ]
+      },
+      "z0": -21,
+      "z1": 0.5,
+      "frame": {
+       "o": [
+        180.975,
+        -158.75,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        -1,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "domino-long-1",
+   "name": "Domino 8x40",
+   "kind": "tenon",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -4,
+        506.65
+       ],
+       "segs": [
+        {
+         "to": [
+          -4,
+          520.65
+         ]
+        },
+        {
+         "to": [
+          4,
+          520.65
+         ],
+         "via": [
+          0,
+          524.65
+         ]
+        },
+        {
+         "to": [
+          4,
+          506.65
+         ]
+        },
+        {
+         "to": [
+          -4,
+          506.65
+         ],
+         "via": [
+          0,
+          502.65
+         ]
+        }
+       ]
+      },
+      "z0": -20,
+      "z1": 20,
+      "frame": {
+       "o": [
+        158.75,
+        -180.975,
+        0
+       ],
+       "x": [
+        0,
+        1,
+        0
+       ],
+       "z": [
+        1,
+        0,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "domino-short-1",
+   "name": "Domino 8x40",
+   "kind": "tenon",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -4,
+        482.65
+       ],
+       "segs": [
+        {
+         "to": [
+          -4,
+          496.65
+         ]
+        },
+        {
+         "to": [
+          4,
+          496.65
+         ],
+         "via": [
+          0,
+          500.65
+         ]
+        },
+        {
+         "to": [
+          4,
+          482.65
+         ]
+        },
+        {
+         "to": [
+          -4,
+          482.65
+         ],
+         "via": [
+          0,
+          478.65
+         ]
+        }
+       ]
+      },
+      "z0": -20,
+      "z1": 20,
+      "frame": {
+       "o": [
+        180.975,
+        -158.75,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        -1,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "loose-tenon",
+   "parts": [
+    "apron-front",
+    "leg-front-right"
+   ],
+   "via": [
+    "domino-long-1"
+   ]
+  },
+  {
+   "type": "loose-tenon",
+   "parts": [
+    "apron-right",
+    "leg-front-right"
+   ],
+   "via": [
+    "domino-short-1"
+   ]
+  }
+ ]
+}

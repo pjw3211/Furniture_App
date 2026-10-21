@@ -1,0 +1,112 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "B3-bent-leg",
+ "section": "B3",
+ "title": "Upright head with a bend (today's shape)",
+ "size": "coffee table",
+ "summary": "The current app leg: square head straight up, lower part leaning 8°. The see-through box is the rough blank it has to be cut from.",
+ "params": [
+  {
+   "name": "splay",
+   "value": 8,
+   "unit": "deg",
+   "note": "Lean of the lower part"
+  },
+  {
+   "name": "blank_w",
+   "value": 90.295,
+   "unit": "mm",
+   "note": "Blank width needed (square)"
+  },
+  {
+   "name": "blank_h",
+   "value": 387,
+   "unit": "mm",
+   "note": "Blank length"
+  }
+ ],
+ "notes": [
+  "The blank needs to be about 3.55 in square, against 1.75 in for a straight leg: 12/4 stock or a glued-on block."
+ ],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg (bent)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 0,
+        "loop": {
+         "kind": "rect",
+         "cx": 531.969916,
+         "cy": -215.753256,
+         "w": 25.4,
+         "h": 25.4
+        }
+       },
+       {
+        "z": 304.8,
+        "loop": {
+         "kind": "rect",
+         "cx": 482.6,
+         "cy": -190.5,
+         "w": 44.45,
+         "h": 44.45
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       460.375,
+       -212.725,
+       304.8
+      ],
+      "max": [
+       504.825,
+       -168.275,
+       381
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "blank",
+   "name": "Rough blank needed",
+   "kind": "reference",
+   "material": "reference",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       457.375,
+       -231.453256,
+       -3
+      ],
+      "max": [
+       547.669916,
+       -165.275,
+       384
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "joints": []
+}

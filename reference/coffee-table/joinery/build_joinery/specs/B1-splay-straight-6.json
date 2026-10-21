@@ -1,0 +1,675 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "B1-splay-straight-6",
+ "section": "B1",
+ "title": "Straight splayed leg, 6°",
+ "size": "coffee table",
+ "summary": "A straight leg leaning out 6° on the diagonal. The apron shoulders are cut to the leg's slope and the tenons stay straight.",
+ "params": [
+  {
+   "name": "leg_sq",
+   "value": 44.45,
+   "unit": "mm",
+   "note": "Leg size at the head"
+  },
+  {
+   "name": "apron_h",
+   "value": 76.2,
+   "unit": "mm",
+   "note": "Apron height"
+  },
+  {
+   "name": "apron_t",
+   "value": 19.05,
+   "unit": "mm",
+   "note": "Apron thickness"
+  },
+  {
+   "name": "apron_set",
+   "value": 6.35,
+   "unit": "mm",
+   "note": "Apron set back from the leg's outside face"
+  },
+  {
+   "name": "splay",
+   "value": 6,
+   "unit": "deg",
+   "note": "Lean on the diagonal"
+  },
+  {
+   "name": "lean_x",
+   "value": 5.584,
+   "unit": "deg",
+   "note": "Lean seen from the front: long apron shoulder angle and saw setting"
+  },
+  {
+   "name": "lean_y",
+   "value": 2.21,
+   "unit": "deg",
+   "note": "Lean seen from the end: short apron shoulder angle"
+  },
+  {
+   "name": "tenon_t",
+   "value": 9.525,
+   "unit": "mm",
+   "note": "Tenon thickness"
+  },
+  {
+   "name": "tenon_l",
+   "value": 28.575,
+   "unit": "mm",
+   "note": "Tenon length, mitred"
+  }
+ ],
+ "notes": [
+  "Top and bottom of the leg are cut level; the cut is a compound angle made of lean_x and lean_y."
+ ],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg (splayed)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": -427.548655,
+        "loop": {
+         "kind": "rect",
+         "cx": 10.906453,
+         "cy": -10.906453,
+         "w": 22.637094,
+         "h": 22.637094
+        }
+       },
+       {
+        "z": -76.619731,
+        "loop": {
+         "kind": "rect",
+         "cx": 0,
+         "cy": 0,
+         "w": 44.45,
+         "h": 44.45
+        }
+       }
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        381
+       ],
+       "x": [
+        0.995262,
+        0.003749,
+        0.097155
+       ],
+       "z": [
+        -0.097228,
+        0.038379,
+        0.994522
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -22.225,
+       -22.225,
+       -76.619731
+      ],
+      "max": [
+       22.225,
+       22.225,
+       30
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        381
+       ],
+       "x": [
+        0.995262,
+        0.003749,
+        0.097155
+       ],
+       "z": [
+        -0.097228,
+        0.038379,
+        0.994522
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        0,
+        0,
+        381
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        0,
+        0,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        -1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3,
+       -4.8625,
+       314.225
+      ],
+      "max": [
+       30.075,
+       4.8625,
+       371.575
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3,
+       -4.8625,
+       314.225
+      ],
+      "max": [
+       30.075,
+       4.8625,
+       371.575
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-front",
+   "name": "Long apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -160,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       11.008943,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": -427.548655,
+        "loop": {
+         "kind": "rect",
+         "cx": 10.906453,
+         "cy": -10.906453,
+         "w": 22.637094,
+         "h": 22.637094
+        }
+       },
+       {
+        "z": -76.619731,
+        "loop": {
+         "kind": "rect",
+         "cx": 0,
+         "cy": 0,
+         "w": 44.45,
+         "h": 44.45
+        }
+       }
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        381
+       ],
+       "x": [
+        0.995262,
+        0.003749,
+        0.097155
+       ],
+       "z": [
+        -0.097228,
+        0.038379,
+        0.994522
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -22.225,
+       -22.225,
+       -76.619731
+      ],
+      "max": [
+       22.225,
+       22.225,
+       30
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        381
+       ],
+       "x": [
+        0.995262,
+        0.003749,
+        0.097155
+       ],
+       "z": [
+        -0.097228,
+        0.038379,
+        0.994522
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3,
+       -4.7625,
+       314.325
+      ],
+      "max": [
+       28.575,
+       4.7625,
+       371.475
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        488.596447,
+        -197.203553,
+        0
+       ],
+       "x": [
+        0,
+        0,
+        1
+       ],
+       "z": [
+        0.707107,
+        0.707107,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-right",
+   "name": "Short apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -140,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       11.008943,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": -427.548655,
+        "loop": {
+         "kind": "rect",
+         "cx": 10.906453,
+         "cy": -10.906453,
+         "w": 22.637094,
+         "h": 22.637094
+        }
+       },
+       {
+        "z": -76.619731,
+        "loop": {
+         "kind": "rect",
+         "cx": 0,
+         "cy": 0,
+         "w": 44.45,
+         "h": 44.45
+        }
+       }
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        381
+       ],
+       "x": [
+        0.995262,
+        0.003749,
+        0.097155
+       ],
+       "z": [
+        -0.097228,
+        0.038379,
+        0.994522
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -22.225,
+       -22.225,
+       -76.619731
+      ],
+      "max": [
+       22.225,
+       22.225,
+       30
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        381
+       ],
+       "x": [
+        0.995262,
+        0.003749,
+        0.097155
+       ],
+       "z": [
+        -0.097228,
+        0.038379,
+        0.994522
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3,
+       -4.7625,
+       314.325
+      ],
+      "max": [
+       28.575,
+       4.7625,
+       371.475
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        489.303553,
+        -196.496447,
+        0
+       ],
+       "x": [
+        0,
+        0,
+        1
+       ],
+       "z": [
+        -0.707107,
+        -0.707107,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "mortise-and-tenon",
+   "parts": [
+    "apron-front",
+    "leg-front-right"
+   ]
+  },
+  {
+   "type": "mortise-and-tenon",
+   "parts": [
+    "apron-right",
+    "leg-front-right"
+   ]
+  }
+ ]
+}

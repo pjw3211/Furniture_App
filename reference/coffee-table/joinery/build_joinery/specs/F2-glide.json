@@ -1,0 +1,199 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "F2-glide",
+ "section": "F2",
+ "title": "Levelling glide",
+ "size": "coffee table",
+ "summary": "An M8 threaded insert in the foot takes a screw-in glide, so the table can be levelled.",
+ "params": [
+  {
+   "name": "insert",
+   "value": 10,
+   "unit": "mm",
+   "note": "Insert hole diameter"
+  },
+  {
+   "name": "insert_depth",
+   "value": 15,
+   "unit": "mm",
+   "note": "Insert hole depth"
+  },
+  {
+   "name": "glide_d",
+   "value": 22,
+   "unit": "mm",
+   "note": "Glide pad diameter"
+  },
+  {
+   "name": "lift",
+   "value": 8,
+   "unit": "mm",
+   "note": "Glide height when screwed in"
+  }
+ ],
+ "notes": [
+  "The leg is 8 mm shorter so the overall height stays the same."
+ ],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg (lower 6 in shown)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 8,
+        "loop": {
+         "kind": "rect",
+         "cx": 491.875,
+         "cy": -199.775,
+         "w": 25.9,
+         "h": 25.9
+        }
+       },
+       {
+        "z": 152.4,
+        "loop": {
+         "kind": "rect",
+         "cx": 487.3625,
+         "cy": -195.2625,
+         "w": 34.925,
+         "h": 34.925
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       491.875,
+       -199.775,
+       7
+      ],
+      "p1": [
+       491.875,
+       -199.775,
+       23
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "threaded-insert",
+   "name": "Threaded insert M8",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       491.875,
+       -199.775,
+       8
+      ],
+      "p1": [
+       491.875,
+       -199.775,
+       21
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       491.875,
+       -199.775,
+       7
+      ],
+      "p1": [
+       491.875,
+       -199.775,
+       22
+      ],
+      "r0": 4.05,
+      "r1": 4.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "glide",
+   "name": "Levelling glide M8",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       491.875,
+       -199.775,
+       0
+      ],
+      "p1": [
+       491.875,
+       -199.775,
+       5
+      ],
+      "r0": 11,
+      "r1": 11
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       491.875,
+       -199.775,
+       5
+      ],
+      "p1": [
+       491.875,
+       -199.775,
+       20
+      ],
+      "r0": 4,
+      "r1": 4
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "insert",
+   "parts": [
+    "threaded-insert",
+    "leg-front-right"
+   ]
+  },
+  {
+   "type": "glide",
+   "parts": [
+    "glide",
+    "threaded-insert"
+   ]
+  }
+ ]
+}

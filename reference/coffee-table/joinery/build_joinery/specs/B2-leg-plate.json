@@ -1,0 +1,781 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "B2-leg-plate",
+ "section": "B2",
+ "title": "Angled mounting block and hanger bolt",
+ "size": "coffee table",
+ "summary": "A round leg splayed 10° screws into a threaded insert in a wooden block. The block's underside is cut square to the leg and the block is screwed under the top. No aprons are needed at the leg.",
+ "params": [
+  {
+   "name": "splay",
+   "value": 10,
+   "unit": "deg",
+   "note": "Lean on the diagonal"
+  },
+  {
+   "name": "block",
+   "value": 76.2,
+   "unit": "mm",
+   "note": "Block size (square)"
+  },
+  {
+   "name": "block_t",
+   "value": 22,
+   "unit": "mm",
+   "note": "Block thickness at the leg centre"
+  },
+  {
+   "name": "bolt",
+   "value": 8,
+   "unit": "mm",
+   "note": "Hanger bolt diameter (M8 or 5/16 in)"
+  },
+  {
+   "name": "insert_od",
+   "value": 12,
+   "unit": "mm",
+   "note": "Threaded insert outside diameter"
+  }
+ ],
+ "notes": [
+  "A bought angled metal leg plate does the same job; measure one and it can replace the block."
+ ],
+ "bodies": [
+  {
+   "id": "top",
+   "name": "Top (corner)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       309.6,
+       -279.4,
+       381
+      ],
+      "max": [
+       609.6,
+       -29.4,
+       406.4
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -218.5,
+       380.5
+      ],
+      "p1": [
+       454.6,
+       -218.5,
+       395
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -218.5,
+       380.5
+      ],
+      "p1": [
+       510.6,
+       -218.5,
+       395
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -162.5,
+       380.5
+      ],
+      "p1": [
+       510.6,
+       -162.5,
+       395
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -162.5,
+       380.5
+      ],
+      "p1": [
+       454.6,
+       -162.5,
+       395
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "mounting-block",
+   "name": "Angled mounting block",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       444.5,
+       -228.6,
+       341
+      ],
+      "max": [
+       520.7,
+       -152.4,
+       381
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        359
+       ],
+       "x": [
+        0.986869,
+        0.010435,
+        0.161182
+       ],
+       "z": [
+        0.16152,
+        -0.063758,
+        -0.984808
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       482.68076,
+       -190.531879,
+       358.507596
+      ],
+      "p1": [
+       479.369605,
+       -189.224844,
+       378.696155
+      ],
+      "r0": 6.05,
+      "r1": 6.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -218.5,
+       321
+      ],
+      "p1": [
+       454.6,
+       -218.5,
+       369
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -218.5,
+       368.5
+      ],
+      "p1": [
+       454.6,
+       -218.5,
+       381.5
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -218.5,
+       321
+      ],
+      "p1": [
+       510.6,
+       -218.5,
+       369
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -218.5,
+       368.5
+      ],
+      "p1": [
+       510.6,
+       -218.5,
+       381.5
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -162.5,
+       321
+      ],
+      "p1": [
+       510.6,
+       -162.5,
+       369
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -162.5,
+       368.5
+      ],
+      "p1": [
+       510.6,
+       -162.5,
+       381.5
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -162.5,
+       321
+      ],
+      "p1": [
+       454.6,
+       -162.5,
+       369
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -162.5,
+       368.5
+      ],
+      "p1": [
+       454.6,
+       -162.5,
+       381.5
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "leg-front-right",
+   "name": "Leg (round, splayed)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": -394.538154,
+        "loop": {
+         "kind": "circle",
+         "cx": 0,
+         "cy": 0,
+         "r": 10.16
+        }
+       },
+       {
+        "z": 0,
+        "loop": {
+         "kind": "circle",
+         "cx": 0,
+         "cy": 0,
+         "r": 22.225
+        }
+       }
+      ],
+      "frame": {
+       "o": [
+        482.6,
+        -190.5,
+        359
+       ],
+       "x": [
+        0.986869,
+        0.010435,
+        0.161182
+       ],
+       "z": [
+        -0.16152,
+        0.063758,
+        0.984808
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        0,
+        0,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        -1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       482.51924,
+       -190.468121,
+       359.492404
+      ],
+      "p1": [
+       486.799514,
+       -192.157703,
+       333.394998
+      ],
+      "r0": 4.05,
+      "r1": 4.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "threaded-insert",
+   "name": "Threaded insert M8",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       482.6,
+       -190.5,
+       359
+      ],
+      "p1": [
+       479.692644,
+       -189.35236,
+       376.72654
+      ],
+      "r0": 6,
+      "r1": 6
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       482.76152,
+       -190.563758,
+       358.015192
+      ],
+      "p1": [
+       479.531125,
+       -189.288602,
+       377.711347
+      ],
+      "r0": 4.05,
+      "r1": 4.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "hanger-bolt",
+   "name": "Hanger bolt M8 × 42",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       486.637994,
+       -192.093945,
+       334.379806
+      ],
+      "p1": [
+       479.854164,
+       -189.416117,
+       375.741732
+      ],
+      "r0": 4,
+      "r1": 4
+     }
+    }
+   ]
+  },
+  {
+   "id": "screw-1",
+   "name": "Wood screw #8 × 1",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -218.5,
+       369
+      ],
+      "p1": [
+       454.6,
+       -218.5,
+       394
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -218.5,
+       366
+      ],
+      "p1": [
+       454.6,
+       -218.5,
+       369
+      ],
+      "r0": 4.2,
+      "r1": 4.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "screw-2",
+   "name": "Wood screw #8 × 1",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -218.5,
+       369
+      ],
+      "p1": [
+       510.6,
+       -218.5,
+       394
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -218.5,
+       366
+      ],
+      "p1": [
+       510.6,
+       -218.5,
+       369
+      ],
+      "r0": 4.2,
+      "r1": 4.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "screw-3",
+   "name": "Wood screw #8 × 1",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -162.5,
+       369
+      ],
+      "p1": [
+       510.6,
+       -162.5,
+       394
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       510.6,
+       -162.5,
+       366
+      ],
+      "p1": [
+       510.6,
+       -162.5,
+       369
+      ],
+      "r0": 4.2,
+      "r1": 4.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "screw-4",
+   "name": "Wood screw #8 × 1",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -162.5,
+       369
+      ],
+      "p1": [
+       454.6,
+       -162.5,
+       394
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       454.6,
+       -162.5,
+       366
+      ],
+      "p1": [
+       454.6,
+       -162.5,
+       369
+      ],
+      "r0": 4.2,
+      "r1": 4.2
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "hanger-bolt",
+   "parts": [
+    "hanger-bolt",
+    "leg-front-right"
+   ]
+  },
+  {
+   "type": "insert",
+   "parts": [
+    "threaded-insert",
+    "mounting-block"
+   ]
+  },
+  {
+   "type": "bolt-in-insert",
+   "parts": [
+    "hanger-bolt",
+    "threaded-insert"
+   ]
+  },
+  {
+   "type": "leg-on-block",
+   "parts": [
+    "leg-front-right",
+    "mounting-block"
+   ],
+   "contact": "touch"
+  },
+  {
+   "type": "screw",
+   "parts": [
+    "mounting-block",
+    "top"
+   ],
+   "via": [
+    "screw-1"
+   ]
+  },
+  {
+   "type": "screw",
+   "parts": [
+    "mounting-block",
+    "top"
+   ],
+   "via": [
+    "screw-2"
+   ]
+  },
+  {
+   "type": "screw",
+   "parts": [
+    "mounting-block",
+    "top"
+   ],
+   "via": [
+    "screw-3"
+   ]
+  },
+  {
+   "type": "screw",
+   "parts": [
+    "mounting-block",
+    "top"
+   ],
+   "via": [
+    "screw-4"
+   ]
+  }
+ ]
+}

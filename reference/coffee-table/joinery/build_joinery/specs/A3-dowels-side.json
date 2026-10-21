@@ -1,0 +1,461 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "A3-dowels-side",
+ "section": "A3",
+ "title": "Dowels (side table, staggered)",
+ "summary": "Dowels from the two aprons sit at different heights so they miss each other in the thinner leg.",
+ "size": "side table",
+ "params": [
+  {
+   "name": "leg_sq",
+   "value": 38.1,
+   "unit": "mm",
+   "note": "Leg size at the head"
+  },
+  {
+   "name": "apron_h",
+   "value": 63.5,
+   "unit": "mm",
+   "note": "Apron height"
+  },
+  {
+   "name": "apron_t",
+   "value": 19.05,
+   "unit": "mm",
+   "note": "Apron thickness"
+  },
+  {
+   "name": "apron_set",
+   "value": 6.35,
+   "unit": "mm",
+   "note": "Apron set back from the leg's outside face"
+  },
+  {
+   "name": "dowel_d",
+   "value": 10,
+   "unit": "mm",
+   "note": "Dowel diameter"
+  },
+  {
+   "name": "dowel_l",
+   "value": 40,
+   "unit": "mm",
+   "note": "Dowel length"
+  },
+  {
+   "name": "stagger",
+   "value": 12,
+   "unit": "mm",
+   "note": "Offset between the two aprons' dowels"
+  }
+ ],
+ "notes": [],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 0,
+        "loop": {
+         "kind": "circle",
+         "cx": 177.8,
+         "cy": -177.8,
+         "r": 9.525
+        }
+       },
+       {
+        "z": 457.2,
+        "loop": {
+         "kind": "circle",
+         "cx": 177.8,
+         "cy": -177.8,
+         "r": 19.05
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       158.75,
+       -196.85,
+       457.2
+      ],
+      "max": [
+       196.85,
+       -158.75,
+       533.4
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       158.25,
+       -180.975,
+       519.65
+      ],
+      "p1": [
+       179.75,
+       -180.975,
+       519.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       158.25,
+       -180.975,
+       495.65
+      ],
+      "p1": [
+       179.75,
+       -180.975,
+       495.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       180.975,
+       -158.25,
+       507.65
+      ],
+      "p1": [
+       180.975,
+       -179.75,
+       507.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       180.975,
+       -158.25,
+       483.65
+      ],
+      "p1": [
+       180.975,
+       -179.75,
+       483.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-front",
+   "name": "Long apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -120,
+       -9.525,
+       469.9
+      ],
+      "max": [
+       0,
+       9.525,
+       533.4
+      ],
+      "frame": {
+       "o": [
+        158.75,
+        -180.975,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       137.75,
+       -180.975,
+       519.65
+      ],
+      "p1": [
+       159.25,
+       -180.975,
+       519.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       137.75,
+       -180.975,
+       495.65
+      ],
+      "p1": [
+       159.25,
+       -180.975,
+       495.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-right",
+   "name": "Short apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -120,
+       -9.525,
+       469.9
+      ],
+      "max": [
+       0,
+       9.525,
+       533.4
+      ],
+      "frame": {
+       "o": [
+        180.975,
+        -158.75,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       180.975,
+       -137.75,
+       507.65
+      ],
+      "p1": [
+       180.975,
+       -159.25,
+       507.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       180.975,
+       -137.75,
+       483.65
+      ],
+      "p1": [
+       180.975,
+       -159.25,
+       483.65
+      ],
+      "r0": 5.05,
+      "r1": 5.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "dowel-long-1",
+   "name": "Dowel 10 × 40",
+   "kind": "tenon",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       138.75,
+       -180.975,
+       519.65
+      ],
+      "p1": [
+       178.75,
+       -180.975,
+       519.65
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "dowel-long-2",
+   "name": "Dowel 10 × 40",
+   "kind": "tenon",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       138.75,
+       -180.975,
+       495.65
+      ],
+      "p1": [
+       178.75,
+       -180.975,
+       495.65
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "dowel-short-1",
+   "name": "Dowel 10 × 40",
+   "kind": "tenon",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       180.975,
+       -138.75,
+       507.65
+      ],
+      "p1": [
+       180.975,
+       -178.75,
+       507.65
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "dowel-short-2",
+   "name": "Dowel 10 × 40",
+   "kind": "tenon",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       180.975,
+       -138.75,
+       483.65
+      ],
+      "p1": [
+       180.975,
+       -178.75,
+       483.65
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "dowel",
+   "parts": [
+    "apron-front",
+    "leg-front-right"
+   ],
+   "via": [
+    "dowel-long-1",
+    "dowel-long-2"
+   ]
+  },
+  {
+   "type": "dowel",
+   "parts": [
+    "apron-right",
+    "leg-front-right"
+   ],
+   "via": [
+    "dowel-short-1",
+    "dowel-short-2"
+   ]
+  }
+ ]
+}

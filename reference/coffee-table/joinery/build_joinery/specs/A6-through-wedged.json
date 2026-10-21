@@ -1,0 +1,833 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "A6-through-wedged",
+ "section": "A6",
+ "title": "Wedged through tenon",
+ "summary": "Tenons pass through the leg at different heights and show on the outside, each split by two wedges. Shown before wedging.",
+ "size": "coffee table",
+ "params": [
+  {
+   "name": "leg_sq",
+   "value": 44.45,
+   "unit": "mm",
+   "note": "Leg size at the head"
+  },
+  {
+   "name": "apron_h",
+   "value": 76.2,
+   "unit": "mm",
+   "note": "Apron height"
+  },
+  {
+   "name": "apron_t",
+   "value": 19.05,
+   "unit": "mm",
+   "note": "Apron thickness"
+  },
+  {
+   "name": "apron_set",
+   "value": 6.35,
+   "unit": "mm",
+   "note": "Apron set back from the leg's outside face"
+  },
+  {
+   "name": "tenon_t",
+   "value": 9.525,
+   "unit": "mm",
+   "note": "Tenon thickness"
+  },
+  {
+   "name": "tenon_w",
+   "value": 25.4,
+   "unit": "mm",
+   "note": "Tenon height"
+  },
+  {
+   "name": "proud",
+   "value": 1.5,
+   "unit": "mm",
+   "note": "Tenon end stands out of the leg"
+  },
+  {
+   "name": "wedge_kerf",
+   "value": 2.2,
+   "unit": "mm",
+   "note": "Saw kerf for each wedge"
+  },
+  {
+   "name": "flare",
+   "value": 1.5,
+   "unit": "mm",
+   "note": "Mortise flare at the outside face"
+  }
+ ],
+ "notes": [
+  "The mortise flares 1.5 mm top and bottom on the outside so the wedged tenon locks in."
+ ],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 0,
+        "loop": {
+         "kind": "rect",
+         "cx": 492.125,
+         "cy": -200.025,
+         "w": 25.4,
+         "h": 25.4
+        }
+       },
+       {
+        "z": 304.8,
+        "loop": {
+         "kind": "rect",
+         "cx": 482.6,
+         "cy": -190.5,
+         "w": 44.45,
+         "h": 44.45
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       460.375,
+       -212.725,
+       304.8
+      ],
+      "max": [
+       504.825,
+       -168.275,
+       381
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -0.5,
+       -4.8625,
+       345.975
+      ],
+      "max": [
+       44.95,
+       4.8625,
+       371.575
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        19.45,
+        345.975
+       ],
+       "segs": [
+        {
+         "to": [
+          44.95,
+          344.475
+         ]
+        },
+        {
+         "to": [
+          44.95,
+          373.075
+         ]
+        },
+        {
+         "to": [
+          19.45,
+          371.575
+         ]
+        }
+       ]
+      },
+      "z0": -4.8625,
+      "z1": 4.8625,
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        -1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -0.5,
+       -4.8625,
+       314.225
+      ],
+      "max": [
+       44.95,
+       4.8625,
+       339.825
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        19.45,
+        314.225
+       ],
+       "segs": [
+        {
+         "to": [
+          44.95,
+          312.725
+         ]
+        },
+        {
+         "to": [
+          44.95,
+          341.325
+         ]
+        },
+        {
+         "to": [
+          19.45,
+          339.825
+         ]
+        }
+       ]
+      },
+      "z0": -4.8625,
+      "z1": 4.8625,
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        -1,
+        0,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-front",
+   "name": "Long apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -160,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       0,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       0,
+       -4.7625,
+       346.075
+      ],
+      "max": [
+       45.95,
+       4.7625,
+       371.475
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       20.95,
+       -5.7625,
+       351.325
+      ],
+      "max": [
+       46.95,
+       5.7625,
+       353.525
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       20.95,
+       -5.7625,
+       364.025
+      ],
+      "max": [
+       46.95,
+       5.7625,
+       366.225
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-right",
+   "name": "Short apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -140,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       0,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       0,
+       -4.7625,
+       314.325
+      ],
+      "max": [
+       45.95,
+       4.7625,
+       339.725
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       20.95,
+       -5.7625,
+       319.575
+      ],
+      "max": [
+       46.95,
+       5.7625,
+       321.775
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       20.95,
+       -5.7625,
+       332.275
+      ],
+      "max": [
+       46.95,
+       5.7625,
+       334.475
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "wedge-long-1",
+   "name": "Wedge",
+   "kind": "tenon",
+   "material": "maple",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        21.95,
+        352.425
+       ],
+       "segs": [
+        {
+         "to": [
+          45.95,
+          351.375
+         ]
+        },
+        {
+         "to": [
+          45.95,
+          353.475
+         ]
+        }
+       ]
+      },
+      "z0": -4.7625,
+      "z1": 4.7625,
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        -1,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "wedge-long-2",
+   "name": "Wedge",
+   "kind": "tenon",
+   "material": "maple",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        21.95,
+        365.125
+       ],
+       "segs": [
+        {
+         "to": [
+          45.95,
+          364.075
+         ]
+        },
+        {
+         "to": [
+          45.95,
+          366.175
+         ]
+        }
+       ]
+      },
+      "z0": -4.7625,
+      "z1": 4.7625,
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        -1,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "wedge-short-1",
+   "name": "Wedge",
+   "kind": "tenon",
+   "material": "maple",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        21.95,
+        320.675
+       ],
+       "segs": [
+        {
+         "to": [
+          45.95,
+          319.625
+         ]
+        },
+        {
+         "to": [
+          45.95,
+          321.725
+         ]
+        }
+       ]
+      },
+      "z0": -4.7625,
+      "z1": 4.7625,
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        -1,
+        0,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "wedge-short-2",
+   "name": "Wedge",
+   "kind": "tenon",
+   "material": "maple",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        21.95,
+        333.375
+       ],
+       "segs": [
+        {
+         "to": [
+          45.95,
+          332.325
+         ]
+        },
+        {
+         "to": [
+          45.95,
+          334.425
+         ]
+        }
+       ]
+      },
+      "z0": -4.7625,
+      "z1": 4.7625,
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        -1,
+        0,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "through-tenon",
+   "parts": [
+    "apron-front",
+    "leg-front-right"
+   ]
+  },
+  {
+   "type": "wedge",
+   "parts": [
+    "wedge-long-1",
+    "apron-front"
+   ]
+  },
+  {
+   "type": "wedge",
+   "parts": [
+    "wedge-long-2",
+    "apron-front"
+   ]
+  },
+  {
+   "type": "through-tenon",
+   "parts": [
+    "apron-right",
+    "leg-front-right"
+   ]
+  },
+  {
+   "type": "wedge",
+   "parts": [
+    "wedge-short-1",
+    "apron-right"
+   ]
+  },
+  {
+   "type": "wedge",
+   "parts": [
+    "wedge-short-2",
+    "apron-right"
+   ]
+  }
+ ]
+}

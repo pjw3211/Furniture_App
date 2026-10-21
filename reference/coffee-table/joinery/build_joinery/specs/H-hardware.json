@@ -1,0 +1,899 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "H-hardware",
+ "section": "H",
+ "title": "Hardware sheet",
+ "size": "-",
+ "summary": "Every bought part used by the joint models, side by side. Items marked 'placeholder size' should be measured from the ones you buy.",
+ "params": [],
+ "notes": [],
+ "bodies": [
+  {
+   "id": "screw-8x1-1-4",
+   "name": "Wood screw #8 × 1¼ (4 × 30 mm)",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       5,
+       0,
+       0
+      ],
+      "p1": [
+       5,
+       0,
+       32
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       5,
+       0,
+       32
+      ],
+      "p1": [
+       5,
+       0,
+       35
+      ],
+      "r0": 4.2,
+      "r1": 4.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "screw-8x5-8",
+   "name": "Pan-head screw #8 × ⅝",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       30,
+       0,
+       0
+      ],
+      "p1": [
+       30,
+       0,
+       16
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       30,
+       0,
+       16
+      ],
+      "p1": [
+       30,
+       0,
+       18.5
+      ],
+      "r0": 4.2,
+      "r1": 4.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "domino-8x40",
+   "name": "Domino 8x40",
+   "kind": "hardware",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        54,
+        -4
+       ],
+       "segs": [
+        {
+         "to": [
+          68,
+          -4
+         ]
+        },
+        {
+         "to": [
+          68,
+          4
+         ],
+         "via": [
+          72,
+          0
+         ]
+        },
+        {
+         "to": [
+          54,
+          4
+         ]
+        },
+        {
+         "to": [
+          54,
+          -4
+         ],
+         "via": [
+          50,
+          0
+         ]
+        }
+       ]
+      },
+      "z0": 0,
+      "z1": 40
+     }
+    }
+   ]
+  },
+  {
+   "id": "domino-10x50",
+   "name": "Domino 10x50",
+   "kind": "hardware",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        92,
+        -5
+       ],
+       "segs": [
+        {
+         "to": [
+          106,
+          -5
+         ]
+        },
+        {
+         "to": [
+          106,
+          5
+         ],
+         "via": [
+          111,
+          0
+         ]
+        },
+        {
+         "to": [
+          92,
+          5
+         ]
+        },
+        {
+         "to": [
+          92,
+          -5
+         ],
+         "via": [
+          87,
+          0
+         ]
+        }
+       ]
+      },
+      "z0": 0,
+      "z1": 50
+     }
+    }
+   ]
+  },
+  {
+   "id": "domino-5x30",
+   "name": "Domino 5x30",
+   "kind": "hardware",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        128.5,
+        -2.5
+       ],
+       "segs": [
+        {
+         "to": [
+          142.5,
+          -2.5
+         ]
+        },
+        {
+         "to": [
+          142.5,
+          2.5
+         ],
+         "via": [
+          145,
+          0
+         ]
+        },
+        {
+         "to": [
+          128.5,
+          2.5
+         ]
+        },
+        {
+         "to": [
+          128.5,
+          -2.5
+         ],
+         "via": [
+          126,
+          0
+         ]
+        }
+       ]
+      },
+      "z0": 0,
+      "z1": 30
+     }
+    }
+   ]
+  },
+  {
+   "id": "dowel-10x40",
+   "name": "Dowel 10 × 40",
+   "kind": "hardware",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       165,
+       0,
+       0
+      ],
+      "p1": [
+       165,
+       0,
+       40
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "dowel-8x30",
+   "name": "Dowel 8 × 30",
+   "kind": "hardware",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       189,
+       0,
+       0
+      ],
+      "p1": [
+       189,
+       0,
+       30
+      ],
+      "r0": 4,
+      "r1": 4
+     }
+    }
+   ]
+  },
+  {
+   "id": "dowel-9.525x38.1",
+   "name": "Dowel 9.525 × 38.1",
+   "kind": "hardware",
+   "material": "beech",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       212.7625,
+       0,
+       0
+      ],
+      "p1": [
+       212.7625,
+       0,
+       38.1
+      ],
+      "r0": 4.7625,
+      "r1": 4.7625
+     }
+    }
+   ]
+  },
+  {
+   "id": "z-clip",
+   "name": "Z-clip (placeholder size)",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       232.525,
+       -9.5,
+       0
+      ],
+      "max": [
+       240.525,
+       9.5,
+       1.6
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       238.925,
+       -9.5,
+       0
+      ],
+      "max": [
+       240.525,
+       9.5,
+       9.6
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       238.925,
+       -9.5,
+       8
+      ],
+      "max": [
+       254.925,
+       9.5,
+       9.6
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       248.925,
+       0,
+       7
+      ],
+      "p1": [
+       248.925,
+       0,
+       11
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "figure-8",
+   "name": "Figure-8 fastener (placeholder size)",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "circle",
+       "cx": 277.025,
+       "cy": 0,
+       "r": 9.5
+      },
+      "z0": 0,
+      "z1": 3
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "circle",
+       "cx": 293.025,
+       "cy": 0,
+       "r": 8
+      },
+      "z0": 0,
+      "z1": 3
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       277.025,
+       0,
+       3.01
+      ],
+      "p1": [
+       277.025,
+       0,
+       0.8
+      ],
+      "r0": 4.2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       277.025,
+       0,
+       0.9
+      ],
+      "p1": [
+       277.025,
+       0,
+       -1
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       293.025,
+       0,
+       -0.01
+      ],
+      "p1": [
+       293.025,
+       0,
+       2.2
+      ],
+      "r0": 4.2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       293.025,
+       0,
+       2.1
+      ],
+      "p1": [
+       293.025,
+       0,
+       4
+      ],
+      "r0": 2.3,
+      "r1": 2.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "corner-bracket",
+   "name": "Corner bracket (placeholder size)",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        322.525,
+        0
+       ],
+       "segs": [
+        {
+         "to": [
+          372.525,
+          0
+         ]
+        },
+        {
+         "to": [
+          372.525,
+          2.5
+         ]
+        },
+        {
+         "to": [
+          322.525,
+          2.5
+         ]
+        }
+       ]
+      },
+      "z0": 0,
+      "z1": 50
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       322.525,
+       -8,
+       0
+      ],
+      "max": [
+       325.025,
+       0,
+       50
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       370.025,
+       -8,
+       0
+      ],
+      "max": [
+       372.525,
+       0,
+       50
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       347.525,
+       -1,
+       25
+      ],
+      "p1": [
+       347.525,
+       3.5,
+       25
+      ],
+      "r0": 4.5,
+      "r1": 4.5
+     }
+    }
+   ]
+  },
+  {
+   "id": "hanger-bolt-m8x75",
+   "name": "Hanger bolt M8 × 75",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       399.525,
+       0,
+       0
+      ],
+      "p1": [
+       399.525,
+       0,
+       75
+      ],
+      "r0": 4,
+      "r1": 4
+     }
+    }
+   ]
+  },
+  {
+   "id": "nut-m8",
+   "name": "M8 nut",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       428.525,
+       0,
+       0
+      ],
+      "p1": [
+       428.525,
+       0,
+       6.5
+      ],
+      "r0": 6.5,
+      "r1": 6.5
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       428.525,
+       0,
+       -1
+      ],
+      "p1": [
+       428.525,
+       0,
+       7.5
+      ],
+      "r0": 4.05,
+      "r1": 4.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "insert-m8-10",
+   "name": "Threaded insert M8, 10 mm outside",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       455.525,
+       0,
+       0
+      ],
+      "p1": [
+       455.525,
+       0,
+       13
+      ],
+      "r0": 5,
+      "r1": 5
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       455.525,
+       0,
+       -1
+      ],
+      "p1": [
+       455.525,
+       0,
+       20
+      ],
+      "r0": 4.05,
+      "r1": 4.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "insert-m8-12",
+   "name": "Threaded insert M8, 12 mm outside",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       481.525,
+       0,
+       0
+      ],
+      "p1": [
+       481.525,
+       0,
+       18
+      ],
+      "r0": 6,
+      "r1": 6
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       481.525,
+       0,
+       -1
+      ],
+      "p1": [
+       481.525,
+       0,
+       20
+      ],
+      "r0": 4.05,
+      "r1": 4.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "glide-m8",
+   "name": "Levelling glide M8",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       513.525,
+       0,
+       0
+      ],
+      "p1": [
+       513.525,
+       0,
+       5
+      ],
+      "r0": 11,
+      "r1": 11
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       513.525,
+       0,
+       5
+      ],
+      "p1": [
+       513.525,
+       0,
+       20
+      ],
+      "r0": 4,
+      "r1": 4
+     }
+    }
+   ]
+  },
+  {
+   "id": "ferrule",
+   "name": "Brass ferrule (placeholder size)",
+   "kind": "hardware",
+   "material": "brass",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       552.025,
+       0,
+       0
+      ],
+      "p1": [
+       552.025,
+       0,
+       30
+      ],
+      "r0": 12.2,
+      "r1": 12.2
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       552.025,
+       0,
+       1.5
+      ],
+      "p1": [
+       552.025,
+       0,
+       31
+      ],
+      "r0": 10.8,
+      "r1": 10.8
+     }
+    }
+   ]
+  },
+  {
+   "id": "felt-pad",
+   "name": "Felt pad 19 mm",
+   "kind": "hardware",
+   "material": "felt",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       589.025,
+       0,
+       0
+      ],
+      "p1": [
+       589.025,
+       0,
+       3
+      ],
+      "r0": 9.5,
+      "r1": 9.5
+     }
+    }
+   ]
+  }
+ ],
+ "joints": []
+}
