@@ -35,6 +35,7 @@ tbm = Fake(name="tbm")
 fusion.TemporaryBRepManager.get.return_value = tbm
 tbm.booleanOperation.side_effect = lambda *a: calls.__setitem__("booleans", calls["booleans"] + 1) or True
 
+sys.dont_write_bytecode = True
 spec = importlib.util.spec_from_file_location("build_joinery", SCRIPT)
 bj = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(bj)
