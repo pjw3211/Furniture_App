@@ -55,6 +55,18 @@
   .sw i { display: block; height: 16px; border-radius: 5px; margin-bottom: 4px; border: 1px solid #0001; }
   .sw[aria-pressed="true"] { border-color: var(--accent); }
   .swlabel { font-size: 12px; margin: 10px 0 6px; }
+  .exact { margin-top: 6px; }
+  .exact[hidden], .row[hidden] { display: none; }
+  .prow { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center;
+    padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; margin-top: 6px; font-size: 12px; }
+  .prow b { font-size: 13px; font-weight: 600; }
+  .prow small { color: var(--muted); grid-column: 1; font-variant-numeric: tabular-nums; }
+  .prow .acts { grid-row: 1 / span 2; grid-column: 2; display: flex; gap: 5px; }
+  .prow .acts button { border: 1px solid var(--line); background: #fff; border-radius: 7px; font: inherit;
+    font-size: 11px; padding: 4px 8px; cursor: pointer; }
+  .prow .acts button:hover { border-color: #cdb89a; }
+  .exact-notes { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+  .exact-notes:empty { display: none; }
   .row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
   .btn { flex: 1; border: 1.5px solid var(--line); border-radius: 10px; padding: 9px 6px; font: inherit;
     font-size: 12.5px; cursor: pointer; background: #fff; color: var(--ink); white-space: nowrap; }
@@ -120,6 +132,17 @@
       <div id="groups"></div>
       <div class="warn" id="warn"></div>
       <div class="readout" id="info"></div>
+      <section class="exact" id="exact">
+        <h2>Parts for making <em id="exact-status"></em></h2>
+        <p class="sub" id="exact-sub"></p>
+        <div id="parts-list"></div>
+        <div class="exact-notes" id="exact-notes"></div>
+        <div class="row" id="exact-actions">
+          <button class="btn" id="exact-view">Show exact model</button>
+          <button class="btn" id="dl-csv">Cut list (.csv)</button>
+          <button class="btn accent" id="dl-zip">All parts (.zip)</button>
+        </div>
+      </section>
       <div class="row">
         <button class="btn dark" id="save">Save to my pieces</button>
         <button class="btn accent" id="place">Place in room</button>

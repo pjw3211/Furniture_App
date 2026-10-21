@@ -44,3 +44,23 @@ test("room tab shows room options", async ({ page }) => {
   await expect(page.locator("#arrange")).toBeVisible();
   await page.locator("#arrange").click();
 });
+
+test("coffee table parts can be downloaded as STL, DXF, cut list and zip", async ({ page }) => {
+  await page.locator('[data-type="coffee_table"]').click();
+  await expect(page.locator("#parts-list .prow")).toHaveCount(4, { timeout: 90000 });
+  await expect(page.locator("#parts-list")).toContainText("Leg × 4");
+  for (const [sel, ext] of [['#parts-list .prow >> nth=1 >> [data-k="dxf"]', ".dxf"],
+    ['#parts-list .prow >> nth=3 >> [data-k="stl"]', ".stl"], ["#dl-csv", ".csv"], ["#dl-zip", ".zip"]]) {
+    const download = page.waitForEvent("download", { timeout: 60000 });
+    await page.locator(sel).click();
+    expect((await download).suggestedFilename()).toMatch(new RegExp(ext.replace(".", "\\.") + "$"));
+  }
+  await page.locator("#exact-view").click();
+  await expect(page.locator("#exact-view")).toHaveText("Show quick model");
+});
+
+test("pieces without exact parts yet say so", async ({ page }) => {
+  await page.locator('[data-type="sofa"]').click();
+  await expect(page.locator("#exact-sub")).toContainText("coming in a later update");
+  await expect(page.locator("#exact-actions")).toBeHidden();
+});
