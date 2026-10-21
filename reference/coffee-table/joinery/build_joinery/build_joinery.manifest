@@ -1,0 +1,10 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "Furniture App",
+  "description": {
+    "": "Builds the coffee table joinery reference models and exports STEP and DXF files"
+  },
+  "supportedOS": "windows|mac",
+  "editEnabled": true
+}

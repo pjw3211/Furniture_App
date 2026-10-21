@@ -1,0 +1,140 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "F1-ferrule",
+ "section": "F1",
+ "title": "Brass ferrule",
+ "size": "coffee table",
+ "summary": "The round leg's end is turned down to a spigot that fits inside a brass cup, flush with the leg above it.",
+ "params": [
+  {
+   "name": "ferrule_od",
+   "value": 24.412,
+   "unit": "mm",
+   "note": "Ferrule outside diameter (= leg diameter where it ends)"
+  },
+  {
+   "name": "ferrule_id",
+   "value": 21.612,
+   "unit": "mm",
+   "note": "Ferrule inside diameter = spigot"
+  },
+  {
+   "name": "ferrule_h",
+   "value": 30,
+   "unit": "mm",
+   "note": "Ferrule height"
+  }
+ ],
+ "notes": [
+  "Placeholder sizes: buy the ferrules first and size the spigot to them."
+ ],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg (lower 6 in shown)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 30,
+        "loop": {
+         "kind": "circle",
+         "cx": 482.6,
+         "cy": -190.5,
+         "r": 12.20625
+        }
+       },
+       {
+        "z": 152.4,
+        "loop": {
+         "kind": "circle",
+         "cx": 482.6,
+         "cy": -190.5,
+         "r": 16.66875
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       482.6,
+       -190.5,
+       1.5
+      ],
+      "p1": [
+       482.6,
+       -190.5,
+       30.5
+      ],
+      "r0": 10.75625,
+      "r1": 10.75625
+     }
+    }
+   ]
+  },
+  {
+   "id": "ferrule",
+   "name": "Brass ferrule",
+   "kind": "hardware",
+   "material": "brass",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       482.6,
+       -190.5,
+       0
+      ],
+      "p1": [
+       482.6,
+       -190.5,
+       30
+      ],
+      "r0": 12.20625,
+      "r1": 12.20625
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       482.6,
+       -190.5,
+       1.5
+      ],
+      "p1": [
+       482.6,
+       -190.5,
+       31
+      ],
+      "r0": 10.80625,
+      "r1": 10.80625
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "spigot-in-ferrule",
+   "parts": [
+    "leg-front-right",
+    "ferrule"
+   ]
+  }
+ ]
+}

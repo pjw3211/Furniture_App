@@ -1,0 +1,251 @@
+{
+ "format": 1,
+ "models": [
+  {
+   "id": "A1-mt-haunched",
+   "section": "A1",
+   "title": "Haunched mortise and tenon",
+   "bodies": 3
+  },
+  {
+   "id": "A1-mt-haunched-side",
+   "section": "A1",
+   "title": "Haunched mortise and tenon (side table)",
+   "bodies": 3
+  },
+  {
+   "id": "A1-mt-router",
+   "section": "A1",
+   "title": "Mortise and tenon, router cut",
+   "bodies": 3
+  },
+  {
+   "id": "A2-loose-tenon",
+   "section": "A2",
+   "title": "Loose tenons (Domino 8 × 40)",
+   "bodies": 7
+  },
+  {
+   "id": "A2-loose-tenon-side",
+   "section": "A2",
+   "title": "Loose tenons (side table, staggered)",
+   "bodies": 5
+  },
+  {
+   "id": "A3-dowels",
+   "section": "A3",
+   "title": "Dowels",
+   "bodies": 7
+  },
+  {
+   "id": "A3-dowels-side",
+   "section": "A3",
+   "title": "Dowels (side table, staggered)",
+   "bodies": 7
+  },
+  {
+   "id": "A4-bracket-bolt",
+   "section": "A4",
+   "title": "Corner bracket and hanger bolt",
+   "bodies": 10
+  },
+  {
+   "id": "A5-pocket-screws",
+   "section": "A5",
+   "title": "Pocket screws",
+   "bodies": 7
+  },
+  {
+   "id": "A6-through-wedged",
+   "section": "A6",
+   "title": "Wedged through tenon",
+   "bodies": 7
+  },
+  {
+   "id": "B1-splay-straight-6",
+   "section": "B1",
+   "title": "Straight splayed leg, 6°",
+   "bodies": 3
+  },
+  {
+   "id": "B1-splay-straight-10",
+   "section": "B1",
+   "title": "Straight splayed leg, 10°",
+   "bodies": 3
+  },
+  {
+   "id": "B2-leg-plate",
+   "section": "B2",
+   "title": "Angled mounting block and hanger bolt",
+   "bodies": 9
+  },
+  {
+   "id": "B3-bent-leg",
+   "section": "B3",
+   "title": "Upright head with a bend (today's shape)",
+   "bodies": 2
+  },
+  {
+   "id": "C1-buttons",
+   "section": "C1",
+   "title": "Wooden buttons in a groove",
+   "bodies": 10
+  },
+  {
+   "id": "C2-z-clips",
+   "section": "C2",
+   "title": "Metal Z-clips in a saw kerf",
+   "bodies": 10
+  },
+  {
+   "id": "C3-figure-8",
+   "section": "C3",
+   "title": "Figure-8 fasteners",
+   "bodies": 13
+  },
+  {
+   "id": "C4-corner-block",
+   "section": "C4",
+   "title": "Corner block with a slotted screw hole",
+   "bodies": 6
+  },
+  {
+   "id": "D1-glue-up-bevel",
+   "section": "D1",
+   "title": "Solid top, glued up (bevelled edge)",
+   "bodies": 6
+  },
+  {
+   "id": "D1-glue-up-rounded",
+   "section": "D1",
+   "title": "Solid top, glued up (rounded corners)",
+   "bodies": 6
+  },
+  {
+   "id": "D2-veneered",
+   "section": "D2",
+   "title": "Veneered core with a solid edge",
+   "bodies": 11
+  },
+  {
+   "id": "E1-shelf-cleats",
+   "section": "E1",
+   "title": "Shelf on cleats",
+   "bodies": 8
+  },
+  {
+   "id": "E2-shelf-slats",
+   "section": "E2",
+   "title": "End stretchers with a slatted shelf",
+   "bodies": 21
+  },
+  {
+   "id": "E3-shelf-grooved",
+   "section": "E3",
+   "title": "Shelf panel in grooved stretchers",
+   "bodies": 9
+  },
+  {
+   "id": "F1-ferrule",
+   "section": "F1",
+   "title": "Brass ferrule",
+   "bodies": 2
+  },
+  {
+   "id": "F2-glide",
+   "section": "F2",
+   "title": "Levelling glide",
+   "bodies": 3
+  },
+  {
+   "id": "F3-felt",
+   "section": "F3",
+   "title": "Plain foot with a felt pad",
+   "bodies": 2
+  },
+  {
+   "id": "T1-default-table",
+   "section": "T1",
+   "title": "Default coffee table, ready to build",
+   "bodies": 29
+  },
+  {
+   "id": "H-hardware",
+   "section": "H",
+   "title": "Hardware sheet",
+   "bodies": 18
+  }
+ ],
+ "profiles": [
+  {
+   "id": "leg-square-taper-2",
+   "section": "G1",
+   "title": "Square leg, tapered on two inside faces"
+  },
+  {
+   "id": "leg-square-taper-4",
+   "section": "G2",
+   "title": "Square leg, tapered on all four faces"
+  },
+  {
+   "id": "leg-round-taper",
+   "section": "G3",
+   "title": "Round taper with a square head (half profile for the lathe)"
+  },
+  {
+   "id": "leg-faceted-section",
+   "section": "G4",
+   "title": "Faceted (octagonal) leg, section at the head"
+  },
+  {
+   "id": "apron-arc",
+   "section": "G5",
+   "title": "Apron with a single arc"
+  },
+  {
+   "id": "apron-elliptical",
+   "section": "G6",
+   "title": "Apron with an elliptical (three-centred) arch"
+  },
+  {
+   "id": "apron-stepped",
+   "section": "G7",
+   "title": "Apron with a raised flat bottom and curved ends"
+  },
+  {
+   "id": "top-rounded-rect",
+   "section": "G8",
+   "title": "Top: rectangle with 4 in corners"
+  },
+  {
+   "id": "top-superellipse",
+   "section": "G9",
+   "title": "Top: superellipse (Piet Hein, n = 2.5), 54 × 24 in"
+  },
+  {
+   "id": "top-surfboard",
+   "section": "G10",
+   "title": "Top: surfboard (starter shape to adjust)"
+  },
+  {
+   "id": "edge-undercut-bevel",
+   "section": "G12",
+   "title": "Edge: undercut bevel (Juhl, 18.5°)"
+  },
+  {
+   "id": "edge-roundover",
+   "section": "G13",
+   "title": "Edge: ¼ in round-over top and bottom"
+  },
+  {
+   "id": "edge-knife",
+   "section": "G14",
+   "title": "Edge: knife edge (bevelled top and bottom)"
+  },
+  {
+   "id": "edge-soft-square",
+   "section": "G15",
+   "title": "Edge: square with 1.5 mm chamfers"
+  }
+ ]
+}

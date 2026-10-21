@@ -1,0 +1,770 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "C4-corner-block",
+ "section": "C4",
+ "title": "Corner block with a slotted screw hole",
+ "summary": "A glue block notched around the leg, glued to both aprons. One screw goes up into the top through a slot that lets the top move across its width.",
+ "size": "coffee table",
+ "params": [
+  {
+   "name": "leg_sq",
+   "value": 44.45,
+   "unit": "mm",
+   "note": "Leg size at the head"
+  },
+  {
+   "name": "apron_h",
+   "value": 76.2,
+   "unit": "mm",
+   "note": "Apron height"
+  },
+  {
+   "name": "apron_t",
+   "value": 19.05,
+   "unit": "mm",
+   "note": "Apron thickness"
+  },
+  {
+   "name": "apron_set",
+   "value": 6.35,
+   "unit": "mm",
+   "note": "Apron set back from the leg's outside face"
+  },
+  {
+   "name": "block_leg",
+   "value": 89,
+   "unit": "mm",
+   "note": "Block length along each apron"
+  },
+  {
+   "name": "block_h",
+   "value": 50,
+   "unit": "mm",
+   "note": "Block height"
+  },
+  {
+   "name": "slot",
+   "value": 10.724,
+   "unit": "mm",
+   "note": "Slot length = movement + screw diameter"
+  },
+  {
+   "name": "movement",
+   "value": 6.124,
+   "unit": "mm",
+   "note": "Seasonal movement of a 22 in walnut top (4% moisture swing)"
+  }
+ ],
+ "notes": [
+  "A plywood top doesn't move, so it can use a plain round hole."
+ ],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 0,
+        "loop": {
+         "kind": "rect",
+         "cx": 492.125,
+         "cy": -200.025,
+         "w": 25.4,
+         "h": 25.4
+        }
+       },
+       {
+        "z": 304.8,
+        "loop": {
+         "kind": "rect",
+         "cx": 482.6,
+         "cy": -190.5,
+         "w": 44.45,
+         "h": 44.45
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       460.375,
+       -212.725,
+       304.8
+      ],
+      "max": [
+       504.825,
+       -168.275,
+       381
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -0.5,
+       -4.8625,
+       314.225
+      ],
+      "max": [
+       30.075,
+       4.8625,
+       371.575
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -0.5,
+       -4.8625,
+       370.475
+      ],
+      "max": [
+       11.025,
+       4.8625,
+       382
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -0.5,
+       -4.8625,
+       314.225
+      ],
+      "max": [
+       30.075,
+       4.8625,
+       371.575
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -0.5,
+       -4.8625,
+       370.475
+      ],
+      "max": [
+       11.025,
+       4.8625,
+       382
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-front",
+   "name": "Long apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -330,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       0,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       0,
+       -4.7625,
+       314.325
+      ],
+      "max": [
+       28.575,
+       4.7625,
+       371.475
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       0,
+       -4.7625,
+       371.475
+      ],
+      "max": [
+       9.525,
+       4.7625,
+       381
+      ],
+      "frame": {
+       "o": [
+        460.375,
+        -196.85,
+        0
+       ],
+       "x": [
+        1,
+        0,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        488.596447,
+        -197.203553,
+        0
+       ],
+       "x": [
+        0,
+        0,
+        1
+       ],
+       "z": [
+        0.707107,
+        0.707107,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "apron-right",
+   "name": "Short apron",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -160,
+       -9.525,
+       304.8
+      ],
+      "max": [
+       0,
+       9.525,
+       381
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       0,
+       -4.7625,
+       314.325
+      ],
+      "max": [
+       28.575,
+       4.7625,
+       371.475
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       0,
+       -4.7625,
+       371.475
+      ],
+      "max": [
+       9.525,
+       4.7625,
+       381
+      ],
+      "frame": {
+       "o": [
+        488.95,
+        -168.275,
+        0
+       ],
+       "x": [
+        0,
+        -1,
+        0
+       ],
+       "z": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "box",
+      "min": [
+       -3000,
+       -3000,
+       0
+      ],
+      "max": [
+       3000,
+       3000,
+       3000
+      ],
+      "frame": {
+       "o": [
+        489.303553,
+        -196.496447,
+        0
+       ],
+       "x": [
+        0,
+        0,
+        1
+       ],
+       "z": [
+        -0.707107,
+        -0.707107,
+        0
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "top",
+   "name": "Top (corner)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       110,
+       -279.4,
+       381
+      ],
+      "max": [
+       609.6,
+       0,
+       406.4
+      ]
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       435.375,
+       -148.275,
+       380.5
+      ],
+      "p1": [
+       435.375,
+       -148.275,
+       394.5
+      ],
+      "r0": 2.05,
+      "r1": 2.05
+     }
+    }
+   ]
+  },
+  {
+   "id": "corner-block",
+   "name": "Corner block",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        371.375,
+        -187.325
+       ],
+       "segs": [
+        {
+         "to": [
+          460.375,
+          -187.325
+         ]
+        },
+        {
+         "to": [
+          460.375,
+          -168.275
+         ]
+        },
+        {
+         "to": [
+          479.425,
+          -168.275
+         ]
+        },
+        {
+         "to": [
+          479.425,
+          -79.275
+         ]
+        }
+       ]
+      },
+      "z0": 330,
+      "z1": 380
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "circle",
+       "cx": 435.375,
+       "cy": -148.275,
+       "r": 8.362224
+      },
+      "z0": 329,
+      "z1": 365
+     }
+    },
+    {
+     "op": "cut",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        433.075,
+        -151.337224
+       ],
+       "segs": [
+        {
+         "to": [
+          433.075,
+          -145.212776
+         ]
+        },
+        {
+         "to": [
+          437.675,
+          -145.212776
+         ],
+         "via": [
+          435.375,
+          -142.912776
+         ]
+        },
+        {
+         "to": [
+          437.675,
+          -151.337224
+         ]
+        },
+        {
+         "to": [
+          433.075,
+          -151.337224
+         ],
+         "via": [
+          435.375,
+          -153.637224
+         ]
+        }
+       ]
+      },
+      "z0": 364.5,
+      "z1": 381
+     }
+    }
+   ]
+  },
+  {
+   "id": "screw-block",
+   "name": "Wood screw #8 × 1¼",
+   "kind": "hardware",
+   "material": "steel",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       435.375,
+       -148.275,
+       365
+      ],
+      "p1": [
+       435.375,
+       -148.275,
+       394
+      ],
+      "r0": 2,
+      "r1": 2
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       435.375,
+       -148.275,
+       362
+      ],
+      "p1": [
+       435.375,
+       -148.275,
+       365
+      ],
+      "r0": 4.2,
+      "r1": 4.2
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "mortise-and-tenon",
+   "parts": [
+    "apron-front",
+    "leg-front-right"
+   ]
+  },
+  {
+   "type": "mortise-and-tenon",
+   "parts": [
+    "apron-right",
+    "leg-front-right"
+   ]
+  },
+  {
+   "type": "glue-block",
+   "parts": [
+    "corner-block",
+    "apron-front"
+   ],
+   "contact": "touch"
+  },
+  {
+   "type": "glue-block",
+   "parts": [
+    "corner-block",
+    "apron-right"
+   ],
+   "contact": "touch"
+  },
+  {
+   "type": "screw-in-slot",
+   "parts": [
+    "corner-block",
+    "top"
+   ],
+   "via": [
+    "screw-block"
+   ],
+   "contact": "none"
+  }
+ ]
+}

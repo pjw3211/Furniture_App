@@ -1,0 +1,133 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "F3-felt",
+ "section": "F3",
+ "title": "Plain foot with a felt pad",
+ "size": "coffee table",
+ "summary": "A small chamfer on the foot stops it splintering; a 19 mm felt pad goes underneath.",
+ "params": [
+  {
+   "name": "chamfer",
+   "value": 3,
+   "unit": "mm",
+   "note": "Foot chamfer"
+  },
+  {
+   "name": "pad_d",
+   "value": 19,
+   "unit": "mm",
+   "note": "Felt pad diameter"
+  },
+  {
+   "name": "pad_t",
+   "value": 3,
+   "unit": "mm",
+   "note": "Felt pad thickness"
+  }
+ ],
+ "notes": [],
+ "bodies": [
+  {
+   "id": "leg-front-right",
+   "name": "Leg (lower 6 in shown)",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 3,
+        "loop": {
+         "kind": "rect",
+         "cx": 492.03125,
+         "cy": -199.93125,
+         "w": 19.5875,
+         "h": 19.5875
+        }
+       },
+       {
+        "z": 6,
+        "loop": {
+         "kind": "rect",
+         "cx": 491.9375,
+         "cy": -199.8375,
+         "w": 25.775,
+         "h": 25.775
+        }
+       }
+      ]
+     }
+    },
+    {
+     "op": "add",
+     "shape": {
+      "type": "loft",
+      "sections": [
+       {
+        "z": 6,
+        "loop": {
+         "kind": "rect",
+         "cx": 491.9375,
+         "cy": -199.8375,
+         "w": 25.775,
+         "h": 25.775
+        }
+       },
+       {
+        "z": 152.4,
+        "loop": {
+         "kind": "rect",
+         "cx": 487.3625,
+         "cy": -195.2625,
+         "w": 34.925,
+         "h": 34.925
+        }
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "felt-pad",
+   "name": "Felt pad",
+   "kind": "hardware",
+   "material": "felt",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "cyl",
+      "p0": [
+       492.125,
+       -200.025,
+       0
+      ],
+      "p1": [
+       492.125,
+       -200.025,
+       3
+      ],
+      "r0": 9.5,
+      "r1": 9.5
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "pad",
+   "parts": [
+    "felt-pad",
+    "leg-front-right"
+   ],
+   "contact": "touch"
+  }
+ ]
+}

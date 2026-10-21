@@ -1,0 +1,618 @@
+{
+ "format": 1,
+ "units": "mm",
+ "frame": "Millimetres. Z up, X along the table length, front of the table faces -Y, origin on the floor at the centre of the table.",
+ "id": "D1-glue-up-rounded",
+ "section": "D1",
+ "title": "Solid top, glued up (rounded corners)",
+ "size": "coffee table",
+ "summary": "Five 4.4 in boards glued edge to edge, grain along the length, cut to shape from a panel 1 in oversize each way.",
+ "params": [
+  {
+   "name": "boards",
+   "value": 5,
+   "unit": "",
+   "note": "Number of boards"
+  },
+  {
+   "name": "board_w",
+   "value": 111.76,
+   "unit": "mm",
+   "note": "Finished board width"
+  },
+  {
+   "name": "oversize",
+   "value": 25.4,
+   "unit": "mm",
+   "note": "Extra length and width before shaping"
+  }
+ ],
+ "notes": [
+  "The 1/8 in round-over is routed after shaping and is not modelled here."
+ ],
+ "bodies": [
+  {
+   "id": "top-board-1",
+   "name": "Top board 1",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -508,
+        -279.4
+       ],
+       "segs": [
+        {
+         "to": [
+          508,
+          -279.4
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          -177.8
+         ],
+         "via": [
+          579.842049,
+          -249.642049
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          177.8
+         ]
+        },
+        {
+         "to": [
+          508,
+          279.4
+         ],
+         "via": [
+          579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -508,
+          279.4
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          177.8
+         ],
+         "via": [
+          -579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          -177.8
+         ]
+        },
+        {
+         "to": [
+          -508,
+          -279.4
+         ],
+         "via": [
+          -579.842049,
+          -249.642049
+         ]
+        }
+       ]
+      },
+      "z0": 381,
+      "z1": 406.4
+     }
+    },
+    {
+     "op": "common",
+     "shape": {
+      "type": "box",
+      "min": [
+       -1219.2,
+       -279.4,
+       380
+      ],
+      "max": [
+       1219.2,
+       -167.64,
+       407.4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "top-board-2",
+   "name": "Top board 2",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -508,
+        -279.4
+       ],
+       "segs": [
+        {
+         "to": [
+          508,
+          -279.4
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          -177.8
+         ],
+         "via": [
+          579.842049,
+          -249.642049
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          177.8
+         ]
+        },
+        {
+         "to": [
+          508,
+          279.4
+         ],
+         "via": [
+          579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -508,
+          279.4
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          177.8
+         ],
+         "via": [
+          -579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          -177.8
+         ]
+        },
+        {
+         "to": [
+          -508,
+          -279.4
+         ],
+         "via": [
+          -579.842049,
+          -249.642049
+         ]
+        }
+       ]
+      },
+      "z0": 381,
+      "z1": 406.4
+     }
+    },
+    {
+     "op": "common",
+     "shape": {
+      "type": "box",
+      "min": [
+       -1219.2,
+       -167.64,
+       380
+      ],
+      "max": [
+       1219.2,
+       -55.88,
+       407.4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "top-board-3",
+   "name": "Top board 3",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -508,
+        -279.4
+       ],
+       "segs": [
+        {
+         "to": [
+          508,
+          -279.4
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          -177.8
+         ],
+         "via": [
+          579.842049,
+          -249.642049
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          177.8
+         ]
+        },
+        {
+         "to": [
+          508,
+          279.4
+         ],
+         "via": [
+          579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -508,
+          279.4
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          177.8
+         ],
+         "via": [
+          -579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          -177.8
+         ]
+        },
+        {
+         "to": [
+          -508,
+          -279.4
+         ],
+         "via": [
+          -579.842049,
+          -249.642049
+         ]
+        }
+       ]
+      },
+      "z0": 381,
+      "z1": 406.4
+     }
+    },
+    {
+     "op": "common",
+     "shape": {
+      "type": "box",
+      "min": [
+       -1219.2,
+       -55.88,
+       380
+      ],
+      "max": [
+       1219.2,
+       55.88,
+       407.4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "top-board-4",
+   "name": "Top board 4",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -508,
+        -279.4
+       ],
+       "segs": [
+        {
+         "to": [
+          508,
+          -279.4
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          -177.8
+         ],
+         "via": [
+          579.842049,
+          -249.642049
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          177.8
+         ]
+        },
+        {
+         "to": [
+          508,
+          279.4
+         ],
+         "via": [
+          579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -508,
+          279.4
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          177.8
+         ],
+         "via": [
+          -579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          -177.8
+         ]
+        },
+        {
+         "to": [
+          -508,
+          -279.4
+         ],
+         "via": [
+          -579.842049,
+          -249.642049
+         ]
+        }
+       ]
+      },
+      "z0": 381,
+      "z1": 406.4
+     }
+    },
+    {
+     "op": "common",
+     "shape": {
+      "type": "box",
+      "min": [
+       -1219.2,
+       55.88,
+       380
+      ],
+      "max": [
+       1219.2,
+       167.64,
+       407.4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "top-board-5",
+   "name": "Top board 5",
+   "kind": "wood",
+   "material": "walnut",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "prism",
+      "loop": {
+       "kind": "path",
+       "start": [
+        -508,
+        -279.4
+       ],
+       "segs": [
+        {
+         "to": [
+          508,
+          -279.4
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          -177.8
+         ],
+         "via": [
+          579.842049,
+          -249.642049
+         ]
+        },
+        {
+         "to": [
+          609.6,
+          177.8
+         ]
+        },
+        {
+         "to": [
+          508,
+          279.4
+         ],
+         "via": [
+          579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -508,
+          279.4
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          177.8
+         ],
+         "via": [
+          -579.842049,
+          249.642049
+         ]
+        },
+        {
+         "to": [
+          -609.6,
+          -177.8
+         ]
+        },
+        {
+         "to": [
+          -508,
+          -279.4
+         ],
+         "via": [
+          -579.842049,
+          -249.642049
+         ]
+        }
+       ]
+      },
+      "z0": 381,
+      "z1": 406.4
+     }
+    },
+    {
+     "op": "common",
+     "shape": {
+      "type": "box",
+      "min": [
+       -1219.2,
+       167.64,
+       380
+      ],
+      "max": [
+       1219.2,
+       279.4,
+       407.4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "rough-panel",
+   "name": "Glued-up panel before shaping",
+   "kind": "reference",
+   "material": "reference",
+   "steps": [
+    {
+     "op": "add",
+     "shape": {
+      "type": "box",
+      "min": [
+       -622.3,
+       -292.1,
+       381
+      ],
+      "max": [
+       622.3,
+       292.1,
+       406.4
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "joints": [
+  {
+   "type": "edge-glue",
+   "parts": [
+    "top-board-1",
+    "top-board-2"
+   ],
+   "contact": "touch"
+  },
+  {
+   "type": "edge-glue",
+   "parts": [
+    "top-board-2",
+    "top-board-3"
+   ],
+   "contact": "touch"
+  },
+  {
+   "type": "edge-glue",
+   "parts": [
+    "top-board-3",
+    "top-board-4"
+   ],
+   "contact": "touch"
+  },
+  {
+   "type": "edge-glue",
+   "parts": [
+    "top-board-4",
+    "top-board-5"
+   ],
+   "contact": "touch"
+  }
+ ]
+}
