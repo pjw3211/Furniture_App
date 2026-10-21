@@ -1,0 +1,22 @@
+{
+  "name": "furniture-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Mid-century furniture designer: design pieces, arrange a room, export parts.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1",
+    "vite": "5.4.11",
+    "vitest": "2.1.8"
+  }
+}

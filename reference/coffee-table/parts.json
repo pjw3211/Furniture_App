@@ -1,0 +1,271 @@
+{
+  "units": {
+    "glb": "metres",
+    "stl": "millimetres",
+    "obj": "millimetres"
+  },
+  "axes": {
+    "glb": "Y up, front of table faces +Z",
+    "stl": "Z up, front of table faces -Y",
+    "obj": "Z up, front of table faces -Y"
+  },
+  "origin": "Floor, centre of the table. Every part is exported in place, so parts assemble with no transform.",
+  "mounting_interface_in": {
+    "table_height": 16,
+    "top_underside_z": 15,
+    "leg_centres_xy": [
+      [
+        19,
+        7.5
+      ],
+      [
+        -19,
+        7.5
+      ],
+      [
+        19,
+        -7.5
+      ],
+      [
+        -19,
+        -7.5
+      ]
+    ],
+    "leg_head": "1-3/4 in square, Z 12 to 15 in, on every leg set",
+    "mortise_and_tenon": "3/8 x 1-1/4 x 3/4 in deep, Z 13-5/8 to 14-7/8 in, same on every leg and apron set",
+    "long_rail_centre_y": 7.75,
+    "short_rail_centre_x": 19.25
+  },
+  "categories": [
+    {
+      "id": "top",
+      "name": "Top"
+    },
+    {
+      "id": "legs",
+      "name": "Legs"
+    },
+    {
+      "id": "aprons",
+      "name": "Aprons"
+    }
+  ],
+  "parts": [
+    {
+      "id": "Top_Bevel",
+      "category": "top",
+      "name": "Bevelled edge",
+      "description": "48 x 22 x 1 in. Finn Juhl's 18.5 degree undercut edge makes the top look thinner than it is.",
+      "bbox_in": {
+        "min": [
+          -24.0,
+          -11.0,
+          15.0
+        ],
+        "max": [
+          24.0,
+          11.0,
+          16.0
+        ]
+      },
+      "triangles": 12,
+      "files": {
+        "glb": "models/glb/Top_Bevel.glb",
+        "stl": "models/stl/Top_Bevel.stl",
+        "obj": "models/obj/Top_Bevel.obj"
+      }
+    },
+    {
+      "id": "Top_Rounded",
+      "category": "top",
+      "name": "Rounded rectangle",
+      "description": "48 x 22 x 1 in with 4 in radius corners and 1/8 in round-overs.",
+      "bbox_in": {
+        "min": [
+          -24.0,
+          -11.0,
+          15.0
+        ],
+        "max": [
+          24.0,
+          11.0,
+          16.0
+        ]
+      },
+      "triangles": 10972,
+      "files": {
+        "glb": "models/glb/Top_Rounded.glb",
+        "stl": "models/stl/Top_Rounded.stl",
+        "obj": "models/obj/Top_Rounded.obj"
+      }
+    },
+    {
+      "id": "Top_Superellipse",
+      "category": "top",
+      "name": "Superellipse",
+      "description": "54 x 24 x 1 in. Piet Hein's superellipse (1964): between an oval and a rectangle.",
+      "bbox_in": {
+        "min": [
+          -27.0,
+          -12.0,
+          15.0
+        ],
+        "max": [
+          27.0,
+          12.0,
+          16.0
+        ]
+      },
+      "triangles": 15624,
+      "files": {
+        "glb": "models/glb/Top_Superellipse.glb",
+        "stl": "models/stl/Top_Superellipse.stl",
+        "obj": "models/obj/Top_Superellipse.obj"
+      }
+    },
+    {
+      "id": "Legs_SquareTaper",
+      "category": "legs",
+      "name": "Square tapered",
+      "description": "1-3/4 in square, tapered on the two inside faces to a 1 in foot. Classic Danish.",
+      "bbox_in": {
+        "min": [
+          -19.875,
+          -8.375,
+          0.0
+        ],
+        "max": [
+          19.875,
+          8.375,
+          15.0
+        ]
+      },
+      "triangles": 200,
+      "files": {
+        "glb": "models/glb/Legs_SquareTaper.glb",
+        "stl": "models/stl/Legs_SquareTaper.stl",
+        "obj": "models/obj/Legs_SquareTaper.obj"
+      }
+    },
+    {
+      "id": "Legs_RoundTaper",
+      "category": "legs",
+      "name": "Round tapered",
+      "description": "Square head, then round, tapering from 1-3/4 to 7/8 in. Straight down.",
+      "bbox_in": {
+        "min": [
+          -19.875,
+          -8.375,
+          0.0
+        ],
+        "max": [
+          19.875,
+          8.375,
+          15.0
+        ]
+      },
+      "triangles": 5472,
+      "files": {
+        "glb": "models/glb/Legs_RoundTaper.glb",
+        "stl": "models/stl/Legs_RoundTaper.stl",
+        "obj": "models/obj/Legs_RoundTaper.obj"
+      }
+    },
+    {
+      "id": "Legs_Splayed",
+      "category": "legs",
+      "name": "Splayed",
+      "description": "Square head, round below, splayed 8 degrees outward on the diagonal, 1-5/8 to 7/8 in.",
+      "bbox_in": {
+        "min": [
+          -21.006,
+          -8.557,
+          0.0
+        ],
+        "max": [
+          21.006,
+          8.557,
+          15.0
+        ]
+      },
+      "triangles": 5856,
+      "files": {
+        "glb": "models/glb/Legs_Splayed.glb",
+        "stl": "models/stl/Legs_Splayed.stl",
+        "obj": "models/obj/Legs_Splayed.obj"
+      }
+    },
+    {
+      "id": "Aprons_Straight",
+      "category": "aprons",
+      "name": "Straight",
+      "description": "3/4 x 3 in rails, set back 1/4 in from the leg faces.",
+      "bbox_in": {
+        "min": [
+          -19.625,
+          -8.125,
+          12.0
+        ],
+        "max": [
+          19.625,
+          8.125,
+          15.0
+        ]
+      },
+      "triangles": 176,
+      "files": {
+        "glb": "models/glb/Aprons_Straight.glb",
+        "stl": "models/stl/Aprons_Straight.stl",
+        "obj": "models/obj/Aprons_Straight.obj"
+      }
+    },
+    {
+      "id": "Aprons_Arched",
+      "category": "aprons",
+      "name": "Arched",
+      "description": "3/4 x 3 in rails with an arched lower edge (1-1/4 in rise long, 3/4 in short).",
+      "bbox_in": {
+        "min": [
+          -19.625,
+          -8.125,
+          12.0
+        ],
+        "max": [
+          19.625,
+          8.125,
+          15.0
+        ]
+      },
+      "triangles": 632,
+      "files": {
+        "glb": "models/glb/Aprons_Arched.glb",
+        "stl": "models/stl/Aprons_Arched.stl",
+        "obj": "models/obj/Aprons_Arched.obj"
+      }
+    },
+    {
+      "id": "Aprons_Slim",
+      "category": "aprons",
+      "name": "Slim",
+      "description": "3/4 x 1-1/2 in rails for a lighter, floating look.",
+      "bbox_in": {
+        "min": [
+          -19.625,
+          -8.125,
+          13.5
+        ],
+        "max": [
+          19.625,
+          8.125,
+          15.0
+        ]
+      },
+      "triangles": 176,
+      "files": {
+        "glb": "models/glb/Aprons_Slim.glb",
+        "stl": "models/stl/Aprons_Slim.stl",
+        "obj": "models/obj/Aprons_Slim.obj"
+      }
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Living Room Designer</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --bg: #f4efe6; --panel: #fffaf2; --ink: #2b2118; --muted: #7a6a58;
+    --line: #e2d7c5; --accent: #c0612b; --warn: #a8461b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font-family: "Futura", "Century Gothic", "Avenir Next", system-ui, sans-serif; }
+  .app { display: grid; grid-template-columns: 370px 1fr; height: 100%; }
+  aside { background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto;
+    display: flex; flex-direction: column; }
+  .tabs { display: flex; position: sticky; top: 0; z-index: 2; background: var(--panel);
+    border-bottom: 1px solid var(--line); }
+  .tabs button { flex: 1; border: 0; background: transparent; padding: 15px 8px 13px; font: inherit;
+    font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); cursor: pointer;
+    border-bottom: 2.5px solid transparent; }
+  .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .pane { padding: 16px 20px 30px; }
+  .pane[hidden] { display: none; }
+  h1 { font-size: 18px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin: 0 0 6px; line-height: 1.4; }
+  h2 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin: 22px 0 8px; display: flex; justify-content: space-between; }
+  h2 em { font-style: normal; letter-spacing: .04em; text-transform: none; color: var(--accent); }
+  .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .opt { border: 1.5px solid var(--line); background: #fff; border-radius: 10px;
+    padding: 4px 4px 7px; cursor: pointer; font: inherit; color: inherit; text-align: center; }
+  .opt[draggable="true"] { cursor: grab; }
+  .opt:hover { border-color: #cdb89a; }
+  .opt[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px #c0612b22; }
+  .opt img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain;
+    border-radius: 7px; background: #f7f1e7; pointer-events: none; }
+  .opt b { display: block; font-size: 12px; font-weight: 600; margin-top: 5px; line-height: 1.2; }
+  .opt.dragging { opacity: .45; }
+  .sliders { margin-top: 10px; display: grid; gap: 7px; }
+  .sl { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 8px; font-size: 12px; }
+  .sl output { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .sl input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); margin: 0; }
+  .seg { display: flex; gap: 6px; font-size: 12px; align-items: center; }
+  .seg span { min-width: 70px; }
+  .seg button { flex: 1; border: 1.5px solid var(--line); background: #fff; border-radius: 8px;
+    padding: 5px 3px; font: inherit; cursor: pointer; color: inherit; }
+  .seg button[aria-pressed="true"] { border-color: var(--accent); }
+  .readout { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 6px; }
+  .sw { border: 1.5px solid var(--line); border-radius: 9px; padding: 6px 4px 5px;
+    background: #fff; cursor: pointer; font: inherit; font-size: 11px; color: inherit; }
+  .sw i { display: block; height: 16px; border-radius: 5px; margin-bottom: 4px; border: 1px solid #0001; }
+  .sw[aria-pressed="true"] { border-color: var(--accent); }
+  .swlabel { font-size: 12px; margin: 10px 0 6px; }
+  .row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .btn { flex: 1; border: 1.5px solid var(--line); border-radius: 10px; padding: 9px 6px; font: inherit;
+    font-size: 12.5px; cursor: pointer; background: #fff; color: var(--ink); white-space: nowrap; }
+  .btn.dark { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .warn { display: none; margin-top: 14px; padding: 10px 12px; border-radius: 10px; font-size: 12px;
+    background: #fbe7da; color: var(--warn); line-height: 1.45; }
+  .warn button { margin-top: 6px; border: 0; border-radius: 7px; padding: 5px 10px; font: inherit;
+    background: var(--warn); color: #fff; cursor: pointer; }
+  .editing { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .editing input { font: inherit; font-size: 13px; border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 6px 8px; width: 100%; margin-top: 4px; color: var(--ink); background: #fff; }
+  .pieces { display: grid; gap: 8px; }
+  .piece { display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: center;
+    border: 1.5px solid var(--line); border-radius: 10px; background: #fff; padding: 6px; }
+  .piece img { width: 74px; aspect-ratio: 4 / 3; border-radius: 7px; background: #f7f1e7; object-fit: contain; cursor: grab; }
+  .piece b { font-size: 13px; display: block; }
+  .piece small { color: var(--muted); font-size: 11px; }
+  .piece .acts { display: flex; gap: 5px; margin-top: 5px; }
+  .piece .acts button { border: 1px solid var(--line); background: #fff; border-radius: 7px; font: inherit;
+    font-size: 11.5px; padding: 3px 7px; cursor: pointer; color: var(--ink); }
+  .piece .acts button.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .selbox { border: 1.5px solid var(--accent); border-radius: 10px; padding: 10px 12px; background: #fff; display: none; }
+  .selbox b { font-size: 13px; }
+  main { position: relative; min-height: 0; }
+  #view { position: absolute; inset: 0; }
+  #view canvas { touch-action: none; }
+  .hint { position: absolute; left: 16px; bottom: 14px; font-size: 12px; color: var(--muted);
+    background: #f4efe6cc; padding: 4px 8px; border-radius: 6px; }
+  .title { position: absolute; left: 20px; top: 16px; font-size: 15px; background: #f4efe6cc;
+    padding: 4px 8px; border-radius: 6px; }
+  .drop { position: absolute; inset: 12px; border: 2.5px dashed var(--accent); border-radius: 16px;
+    background: #c0612b10; display: none; place-items: center; pointer-events: none;
+    color: var(--accent); font-size: 15px; letter-spacing: .04em; }
+  main.dragover .drop { display: grid; }
+  .toast { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); background: var(--ink);
+    color: #fff; padding: 8px 14px; border-radius: 9px; font-size: 13px; opacity: 0; transition: opacity .25s;
+    pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .err { position: absolute; inset: 0; display: none; place-items: center; padding: 30px;
+    text-align: center; color: var(--ink); }
+  @media (max-width: 760px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: 55vh auto; }
+    main { order: -1; }
+    aside { border-right: 0; border-top: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-design" aria-selected="true">Design a piece</button>
+      <button role="tab" id="tab-room" aria-selected="false">Living room</button>
+    </div>
+
+    <!-- ============ DESIGNER ============ -->
+    <div class="pane" id="pane-design">
+      <h2 style="margin-top:4px">Furniture</h2>
+      <div class="opts" id="types"></div>
+      <div class="editing" id="editing"></div>
+      <div id="groups"></div>
+      <div class="warn" id="warn"></div>
+      <div class="readout" id="info"></div>
+      <div class="row">
+        <button class="btn dark" id="save">Save to my pieces</button>
+        <button class="btn accent" id="place">Place in room</button>
+      </div>
+      <div class="row">
+        <button class="btn" id="saveas">Save as new</button>
+        <button class="btn" id="explode">Explode</button>
+        <button class="btn" id="reset">Reset</button>
+      </div>
+      <div class="row">
+        <button class="btn" id="dl-design">Download design</button>
+        <button class="btn" id="ld-design">Load design</button>
+        <button class="btn" id="dl-stl">Download STL</button>
+      </div>
+    </div>
+
+    <!-- ============ ROOM ============ -->
+    <div class="pane" id="pane-room" hidden>
+      <p class="sub">Drag a piece from your list onto the room. Click a piece in the room to move it (drag) or turn it.</p>
+      <div class="selbox" id="selbox">
+        <b id="sel-name"></b>
+        <div class="row">
+          <button class="btn" id="rot-l">↺ Turn</button>
+          <button class="btn" id="rot-r">Turn ↻</button>
+          <button class="btn" id="dup">Duplicate</button>
+        </div>
+        <div class="row">
+          <button class="btn" id="edit-sel">Edit design</button>
+          <button class="btn" id="del-sel">Remove</button>
+        </div>
+      </div>
+      <h2>My pieces</h2>
+      <div class="pieces" id="pieces"></div>
+      <div class="row"><button class="btn" id="new-piece">+ Design a new piece</button></div>
+
+      <h2>Room</h2>
+      <div class="sliders" id="room-sliders"></div>
+      <div class="swlabel">Walls</div><div class="swatches" id="sw-wall"></div>
+      <div class="swlabel">Floor</div><div class="swatches" id="sw-floor"></div>
+      <div class="swlabel">Rug</div><div class="swatches" id="sw-rug"></div>
+      <div class="sliders" id="rug-sliders"></div>
+      <div class="sliders" id="room-toggles" style="margin-top:12px"></div>
+      <div class="row">
+        <button class="btn dark" id="arrange">Arrange for me</button>
+        <button class="btn" id="clear">Clear room</button>
+      </div>
+      <div class="row">
+        <button class="btn" id="save-room">Save room file</button>
+        <button class="btn" id="open-room">Open room file</button>
+        <button class="btn" id="shot">Picture</button>
+      </div>
+    </div>
+    <input type="file" id="file" accept=".json,application/json" hidden>
+  </aside>
+  <main>
+    <div id="view"></div>
+    <div class="title" id="title"></div>
+    <div class="hint" id="hint">Drag to orbit · scroll to zoom · right-drag to pan</div>
+    <div class="drop" id="drop">Drop to place</div>
+    <div class="toast" id="toast"></div>
+    <div class="err" id="err"></div>
+  </main>
+</div>
+
+<script>
+  setTimeout(() => {
+    if (window.__ready) return;
+    const el = document.getElementById("err");
+    if (el.style.display === "grid") return;
+    el.style.display = "grid";
+    el.textContent = "The 3D view could not start. Try refreshing the page.";
+  }, 12000);
+</script>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

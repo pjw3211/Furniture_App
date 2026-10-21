@@ -1,0 +1,10 @@
+{
+  "format": "mid-century-coffee-table/1",
+  "units": "inches, degrees",
+  "params": {
+    "table_l": 60, "table_w": 22, "table_h": 16, "inset_x": 6.25, "inset_y": 4.125,
+    "top_mode": "se", "top_t": 1, "corner_r": 0, "se_n": 3.2, "top_bevel": 10, "edge_r": 0.25,
+    "leg_section": "round", "leg_sq": 1.75, "foot": 1.1875, "splay_ang": 12,
+    "apron_h": 3.5, "apron_t": 0.75, "apron_set": 0.25, "arch_rise": 1.6, "finish": "walnut"
+  }
+}
