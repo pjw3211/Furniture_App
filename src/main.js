@@ -1,4 +1,5 @@
 import { createFurniture } from "./furniture.js";
+import { cad, EXACT_TYPES } from "./cad/client.js";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -659,7 +660,121 @@ function updateDesign(changedKey) {
     lastWarn = probs.join();
   }
   fitDesignCamera();
+  scheduleExact();
 }
+
+// =====================================================================
+//  Exact parts: solids, STL, DXF and cut list from the CAD worker
+// =====================================================================
+let exactTimer = 0, exactSeq = 0, exactGroup = null, showExact = false, exactReady = false;
+const exactLift = { top: 8.5, aprons: 3.5, shelf: 0, legs: 0 };
+const mmIn = mm => `${(mm / 25.4).toFixed(2)}`;
+const sizeText = f => `${Math.round(f.length)} × ${Math.round(f.width)} × ${Math.round(f.thickness)} mm` +
+  ` · ${mmIn(f.length)} × ${mmIn(f.width)} × ${mmIn(f.thickness)} in`;
+
+function scheduleExact() {
+  const supported = EXACT_TYPES.has(cur.type);
+  $("exact-status").textContent = "";
+  $("exact-actions").hidden = !supported;
+  if (!supported) {
+    $("exact-sub").textContent = "Exact parts, DXF templates and a cut list for this piece are coming in a later update.";
+    $("parts-list").innerHTML = ""; $("exact-notes").textContent = "";
+    setExactView(false);
+    return;
+  }
+  $("exact-sub").textContent = "";
+  if (designGroup && showExact && exactGroup) designGroup.visible = false;
+  $("exact-status").textContent = exactReady ? "updating…" : "loading…";
+  if (!exactReady) $("exact-sub").textContent = "Starting the exact model engine. The first time takes a few seconds.";
+  setExactButtons(false);
+  clearTimeout(exactTimer);
+  exactTimer = setTimeout(runExact, 350);
+}
+
+async function runExact() {
+  const seq = ++exactSeq, type = cur.type;
+  const params = { ...TYPES[type].defaults, ...cur.params };
+  TYPES[type].clamp(params);
+  try {
+    const res = await cad("build", { type, name: cur.name || TYPES[type].name, params });
+    if (seq !== exactSeq || !res.supported) return;
+    exactReady = true;
+    $("exact-status").textContent = "";
+    $("exact-sub").textContent = "Each part is an exact solid with its joints cut. Download any part as STL or as a DXF template, or everything at once.";
+    renderParts(res);
+    showExactMeshes(res.meshes);
+    setExactButtons(true);
+  } catch (e) {
+    if (seq !== exactSeq) return;
+    $("exact-status").textContent = "";
+    $("exact-sub").textContent = "The exact model could not be built at these settings: " + e.message;
+    $("parts-list").innerHTML = "";
+    console.warn(e);
+  }
+}
+
+function setExactButtons(on) {
+  for (const id of ["dl-csv", "dl-zip", "exact-view"]) $(id).disabled = !on;
+  document.querySelectorAll("#parts-list button").forEach(b => b.disabled = !on);
+}
+
+function renderParts(res) {
+  const list = $("parts-list"); list.innerHTML = "";
+  const base = slug(cur.name || TYPES[cur.type].name);
+  for (const r of res.rows) {
+    const row = document.createElement("div"); row.className = "prow";
+    row.innerHTML = `<b></b><small></small><div class="acts"><button data-k="stl">STL</button><button data-k="dxf">DXF</button></div>`;
+    row.querySelector("b").textContent = r.qty > 1 ? `${r.name} × ${r.qty}` : r.name;
+    row.querySelector("small").textContent = sizeText(r.finished);
+    const id = r.ids[0], file = `${base}-${slug(r.name)}`;
+    row.querySelector('[data-k="stl"]').onclick = () => exportFile(`${file}.stl`, "stl", { partId: id }, "model/stl");
+    row.querySelector('[data-k="dxf"]').onclick = () => exportFile(`${file}.dxf`, "dxf", { partId: id }, "application/dxf");
+    list.append(row);
+  }
+  $("exact-notes").textContent = res.notes.join(" ");
+}
+
+function showExactMeshes(meshes) {
+  if (exactGroup) { dHolder.remove(exactGroup); disposeGroup(exactGroup); }
+  exactGroup = new THREE.Group();
+  // CAD frame (mm, Z up, front -Y) to the view (inches, Y up, front +Z).
+  exactGroup.rotation.x = -Math.PI / 2; exactGroup.scale.setScalar(1 / 25.4);
+  const mats = materialsFor({ ...TYPES[cur.type].defaults, ...cur.params });
+  for (const m of meshes) {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(m.vertices, 3));
+    g.setAttribute("normal", new THREE.BufferAttribute(m.normals, 3));
+    g.setIndex(new THREE.BufferAttribute(m.triangles, 1));
+    const mesh = new THREE.Mesh(g, mats.wood);
+    mesh.castShadow = mesh.receiveShadow = true;
+    mesh.userData.group = m.group;
+    exactGroup.add(mesh);
+  }
+  dHolder.add(exactGroup);
+  setExactView(showExact);
+}
+
+function setExactView(on) {
+  showExact = on && EXACT_TYPES.has(cur.type);
+  $("exact-view").textContent = showExact ? "Show quick model" : "Show exact model";
+  if (designGroup) designGroup.visible = !showExact || !exactGroup;
+  if (exactGroup) {
+    exactGroup.visible = showExact;
+    // Explode lifts in inches; the exact group is in mm with Z up.
+    for (const m of exactGroup.children) m.position.z = explode ? (exactLift[m.userData.group] || 0) * 25.4 : 0;
+  }
+}
+$("exact-view").onclick = () => setExactView(!showExact);
+async function exportFile(name, cmd, data, type) {
+  try { download(name, new Blob([await cad(cmd, data)], { type })); }
+  catch (e) { console.error(e); toast("Sorry, that export failed: " + e.message); }
+}
+$("dl-csv").onclick = () => exportFile(`${slug(cur.name || TYPES[cur.type].name)}-cut-list.csv`, "csv", {}, "text/csv");
+$("dl-zip").onclick = async () => {
+  $("dl-zip").disabled = true; $("dl-zip").textContent = "Preparing…";
+  try { await exportFile(`${slug(cur.name || TYPES[cur.type].name)}-parts.zip`, "zip", {}, "application/zip"); }
+  finally { $("dl-zip").disabled = false; $("dl-zip").textContent = "All parts (.zip)"; }
+};
 let lastSpan = 0;
 function fitDesignCamera(force) {
   if (mode !== "design" || !designGroup) return;
