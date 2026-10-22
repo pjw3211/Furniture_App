@@ -16,7 +16,8 @@ export const HOLE_CLEAR = 0.05;    // radial clearance around dowels, bolts and 
 export const SCREW = { r: 2.0, pilot: 2.05, clear: 2.3, head_r: 4.2, head_t: 3 }; // #8 / 4 mm
 
 // Wood movement: width × coefficient × moisture swing (Wood Handbook, flatsawn).
-export const MOVEMENT = { walnut: 0.00274, teak: 0.00186, white_oak: 0.00365, cherry: 0.00248, hard_maple: 0.00353 };
+export const MOVEMENT = { walnut: 0.00274, teak: 0.00186, white_oak: 0.00365, cherry: 0.00248, hard_maple: 0.00353,
+  rosewood: 0.0020 }; // rosewood: estimate from its tangential shrinkage
 export const MOISTURE_SWING = 4; // %
 export const movement = (widthMm, species = "walnut") => widthMm * MOVEMENT[species] * MOISTURE_SWING;
 

@@ -101,25 +101,39 @@ function zClips() {
       P("clip_t", 1.6, "Clip steel thickness"), P("clip_w", 19, "Clip width")],
     notes: ["Measure the clips you buy and update kerf and clip sizes."],
     fix: ({ g, A, which, apron, top, gap }) => {
-      const t2 = g.apron_t / 2, kt = g.apron_top - 12, s = 1.6, T = g.apron_top, extra = [], joints = [];
-      apron.steps.push(cut(ubox(A, -STUB[which] - 1, -25, t2 - 8, t2 + 1, kt - 3.2, kt)));
+      const extra = [], joints = [];
+      apron.steps.push(cut(zClipKerf(g, A, -STUB[which] - 1, -25)));
       SPOTS[which].forEach((ac, i) => {
-        const id = `z-clip-${which}-${i + 1}`, b0 = t2 + gap, su = b0 + 10, w = 9.5;
-        const clip = body(id, "Z-clip", "hardware", [
-          add(ubox(A, ac - w, ac + w, t2 - 8 + gap, b0 + s, kt - s, kt)),
-          add(ubox(A, ac - w, ac + w, b0, b0 + s, kt - s, T - s)),
-          add(ubox(A, ac - w, ac + w, b0, b0 + 16, T - s, T)),
-          cut(cyl(upt(A, ac, su, T - s - 1), upt(A, ac, su, T + 1), SCREW.clear)),
-        ]);
-        top.steps.push(cut(cyl(upt(A, ac, su, T - 0.5), upt(A, ac, su, T + 14.5), SCREW.pilot)));
-        const screw = body(`screw-${which}-${i + 1}`, "Pan-head screw #8 × ⅝", "hardware",
-          [add(cyl(upt(A, ac, su, T - s), upt(A, ac, su, T + 14), SCREW.r)), add(cyl(upt(A, ac, su, T - s - 2.5), upt(A, ac, su, T - s), SCREW.head_r))]);
-        extra.push(clip, screw);
-        joints.push({ type: "clip-in-kerf", parts: [id, apron.id] }, { type: "clip-on-top", parts: [id, "top"], via: [screw.id] });
+        const z = makeZClip(g, A, `${which}-${i + 1}`, ac, gap);
+        top.steps.push(cut(z.pilot));
+        extra.push(z.clip, z.screw);
+        joints.push(...z.joints(apron.id, "top"));
       });
       return { extra, joints };
     },
   });
+}
+
+// Saw kerf for Z-clips on the inside face of an apron, between a0 and a1.
+export function zClipKerf(g, A, a0, a1) {
+  const t2 = g.apron_t / 2, kt = g.apron_top - 12;
+  return ubox(A, a0, a1, t2 - 8, t2 + 1, kt - 3.2, kt);
+}
+// One Z-clip at distance ac along the apron, with `gap` left for the top to move.
+export function makeZClip(g, A, tag, ac, gap) {
+  const t2 = g.apron_t / 2, kt = g.apron_top - 12, s = 1.6, T = g.apron_top;
+  const id = `z-clip-${tag}`, b0 = t2 + gap, su = b0 + 10, w = 9.5;
+  const clip = body(id, "Z-clip", "hardware", [
+    add(ubox(A, ac - w, ac + w, t2 - 8 + gap, b0 + s, kt - s, kt)),
+    add(ubox(A, ac - w, ac + w, b0, b0 + s, kt - s, T - s)),
+    add(ubox(A, ac - w, ac + w, b0, b0 + 16, T - s, T)),
+    cut(cyl(upt(A, ac, su, T - s - 1), upt(A, ac, su, T + 1), SCREW.clear)),
+  ]);
+  const pilot = cyl(upt(A, ac, su, T - 0.5), upt(A, ac, su, T + 14.5), SCREW.pilot);
+  const screw = body(`screw-${tag}`, "Pan-head screw #8 × ⅝", "hardware",
+    [add(cyl(upt(A, ac, su, T - s), upt(A, ac, su, T + 14), SCREW.r)), add(cyl(upt(A, ac, su, T - s - 2.5), upt(A, ac, su, T - s), SCREW.head_r))]);
+  return { clip, screw, pilot, joints: (apronId, topId) => [{ type: "clip-in-kerf", parts: [id, apronId] },
+    { type: "clip-on-top", parts: [id, topId], via: [screw.id] }] };
 }
 
 // ---- C3: figure-8 fasteners --------------------------------------------------
@@ -131,27 +145,40 @@ function figure8() {
       P("lobe_a", 19, "Apron lobe diameter"), P("lobe_b", 16, "Top lobe diameter"), P("lobe_gap", 16, "Lobe centre to centre")],
     notes: ["Placeholder sizes until a fastener is measured. The recess breaks out of the apron's inside face, which is normal."],
     fix: ({ g, A, which, apron, top }) => {
-      const T = g.apron_top, th = 3, extra = [], joints = [];
+      const extra = [], joints = [];
       SPOTS[which].forEach((ac, i) => {
-        const id = `figure-8-${which}-${i + 1}`, pa = upt(A, ac, 0, 0), pb = upt(A, ac, 16, 0);
-        apron.steps.push(cut(prism(circle(pa[0], pa[1], 11), T - th, T + 1)));
-        apron.steps.push(cut(cyl([pa[0], pa[1], T - th + 0.1], [pa[0], pa[1], T - th - 14], SCREW.pilot)));
-        top.steps.push(cut(cyl([pb[0], pb[1], T - 0.5], [pb[0], pb[1], T + 13.5], SCREW.pilot)));
-        const plate = body(id, "Figure-8 fastener", "hardware", [
-          add(prism(circle(pa[0], pa[1], 9.5), T - th, T)), add(prism(circle(pb[0], pb[1], 8), T - th, T)),
-          cut(cyl([pa[0], pa[1], T + 0.01], [pa[0], pa[1], T - 2.2], 4.2, 2.0)), cut(cyl([pa[0], pa[1], T - 2.1], [pa[0], pa[1], T - th - 1], SCREW.clear)),
-          cut(cyl([pb[0], pb[1], T - th - 0.01], [pb[0], pb[1], T - 0.8], 4.2, 2.0)), cut(cyl([pb[0], pb[1], T - 0.9], [pb[0], pb[1], T + 1], SCREW.clear)),
-        ]);
-        const sa = body(`screw-${which}-${i + 1}a`, "Countersunk screw #8 × ⅝ (into apron)", "hardware",
-          [add(cyl([pa[0], pa[1], T - 0.1], [pa[0], pa[1], T - 2.1], 4.0, 1.9)), add(cyl([pa[0], pa[1], T - 2.0], [pa[0], pa[1], T - th - 13], SCREW.r))]);
-        const sb = body(`screw-${which}-${i + 1}b`, "Countersunk screw #8 × ⅝ (into top)", "hardware",
-          [add(cyl([pb[0], pb[1], T - th + 0.1], [pb[0], pb[1], T - 0.9], 4.0, 1.9)), add(cyl([pb[0], pb[1], T - 1.0], [pb[0], pb[1], T + 13], SCREW.r))]);
-        extra.push(plate, sa, sb);
-        joints.push({ type: "fastener-in-recess", parts: [id, apron.id], via: [sa.id] }, { type: "fastener-on-top", parts: [id, "top"], via: [sb.id] });
+        const f = makeFigure8(g, A, `${which}-${i + 1}`, ac);
+        apron.steps.push(...f.apronCuts.map(cut));
+        top.steps.push(cut(f.pilot));
+        extra.push(f.plate, f.screwA, f.screwB);
+        joints.push(...f.joints(apron.id, "top"));
       });
       return { extra, joints };
     },
   });
+}
+
+// One figure-8 fastener at distance ac along an apron: a recess in the apron
+// top, a screw into the apron and one up into the top.
+// u moves the fastener toward the inside of the apron.
+export function makeFigure8(g, A, tag, ac, u = 0) {
+  const T = g.apron_top, th = 3;
+  const id = `figure-8-${tag}`, pa = upt(A, ac, u, 0), pb = upt(A, ac, u + 16, 0);
+  const apronCuts = [prism(circle(pa[0], pa[1], 11), T - th, T + 1),
+    cyl([pa[0], pa[1], T - th + 0.1], [pa[0], pa[1], T - th - 14], SCREW.pilot)];
+  const pilot = cyl([pb[0], pb[1], T - 0.5], [pb[0], pb[1], T + 13.5], SCREW.pilot);
+  const plate = body(id, "Figure-8 fastener", "hardware", [
+    add(prism(circle(pa[0], pa[1], 9.5), T - th, T)), add(prism(circle(pb[0], pb[1], 8), T - th, T)),
+    cut(cyl([pa[0], pa[1], T + 0.01], [pa[0], pa[1], T - 2.2], 4.2, 2.0)), cut(cyl([pa[0], pa[1], T - 2.1], [pa[0], pa[1], T - th - 1], SCREW.clear)),
+    cut(cyl([pb[0], pb[1], T - th - 0.01], [pb[0], pb[1], T - 0.8], 4.2, 2.0)), cut(cyl([pb[0], pb[1], T - 0.9], [pb[0], pb[1], T + 1], SCREW.clear)),
+  ]);
+  const sa = body(`screw-${tag}a`, "Countersunk screw #8 × ⅝ (into apron)", "hardware",
+    [add(cyl([pa[0], pa[1], T - 0.1], [pa[0], pa[1], T - 2.1], 4.0, 1.9)), add(cyl([pa[0], pa[1], T - 2.0], [pa[0], pa[1], T - th - 13], SCREW.r))]);
+  const sb = body(`screw-${tag}b`, "Countersunk screw #8 × ⅝ (into top)", "hardware",
+    [add(cyl([pb[0], pb[1], T - th + 0.1], [pb[0], pb[1], T - 0.9], 4.0, 1.9)), add(cyl([pb[0], pb[1], T - 1.0], [pb[0], pb[1], T + 13], SCREW.r))]);
+  return { plate, screwA: sa, screwB: sb, apronCuts, pilot,
+    joints: (apronId, topId) => [{ type: "fastener-in-recess", parts: [id, apronId], via: [sa.id] },
+      { type: "fastener-on-top", parts: [id, topId], via: [sb.id] }] };
 }
 
 // ---- C4: corner block with a slotted screw hole ----------------------------------
@@ -164,21 +191,30 @@ function cornerBlock() {
     notes: ["A plywood top doesn't move, so it can use a plain round hole."],
     fix: () => ({ extra: [], joints: [] }),
   });
-  const C = [c.sx * g.long_half, c.sy * g.short_half], yi = c.sy * (g.rail_y - g.apron_t / 2), xi = c.sx * (g.rail_x - g.apron_t / 2);
-  const pts = [[C[0] - c.sx * 89, yi], [C[0], yi], [C[0], C[1]], [xi, C[1]], [xi, C[1] - c.sy * 89]];
-  const S = [C[0] - c.sx * 25, C[1] - c.sy * 20]; // clear of the leg notch and the diagonal face
-  const slotLen = mv + 2 * SCREW.clear;
-  const blockB = body("corner-block", "Corner block", "wood", [add(prism(poly(pts), T - 51, T - 1)),
-    cut(prism(circle(S[0], S[1], slotLen / 2 + 3), T - 52, T - 16)), cut(prism(stadium(S[0], S[1], slotLen, 2 * SCREW.clear, true), T - 16.5, T))]);
-  const top = m.bodies.find(b => b.id === "top");
-  top.steps.push(cut(cyl([S[0], S[1], T - 0.5], [S[0], S[1], T + 13.5], SCREW.pilot)));
-  const screw = body("screw-block", "Wood screw #8 × 1¼", "hardware",
-    [add(cyl([S[0], S[1], T - 16], [S[0], S[1], T + 13], SCREW.r)), add(cyl([S[0], S[1], T - 19], [S[0], S[1], T - 16], SCREW.head_r))]);
-  m.bodies.push(blockB, screw);
-  m.joints.push({ type: "glue-block", parts: ["corner-block", "apron-front"], contact: "touch" },
-    { type: "glue-block", parts: ["corner-block", "apron-right"], contact: "touch" },
-    { type: "screw-in-slot", parts: ["corner-block", "top"], via: ["screw-block"], contact: "none" });
+  const b = makeCornerBlock(g, c, "", mv);
+  m.bodies.find(x => x.id === "top").steps.push(cut(b.pilot));
+  m.bodies.push(b.block, b.screw);
+  m.joints.push(...b.joints("apron-front", "apron-right", "top"));
   return m;
+}
+
+// A corner block glued into the corner between two aprons, with a screw up
+// into the top through a slot `mv` long (plus the screw) for the top to move.
+export function makeCornerBlock(g, c, tag, mv, { len = 89, h = 50 } = {}) {
+  const T = g.apron_top;
+  const C = [c.sx * g.long_half, c.sy * g.short_half], yi = c.sy * (g.rail_y - g.apron_t / 2), xi = c.sx * (g.rail_x - g.apron_t / 2);
+  const pts = [[C[0] - c.sx * len, yi], [C[0], yi], [C[0], C[1]], [xi, C[1]], [xi, C[1] - c.sy * len]];
+  const S = [C[0] - c.sx * 25, C[1] - c.sy * 20]; // clear of the leg notch and the diagonal face
+  const slotLen = mv + 2 * SCREW.clear, id = `corner-block${tag}`, sid = `screw-block${tag}`;
+  const block = body(id, "Corner block", "wood", [add(prism(poly(pts), T - h - 1, T - 1)),
+    cut(prism(circle(S[0], S[1], slotLen / 2 + 3), T - h - 2, T - 16)), cut(prism(stadium(S[0], S[1], slotLen, 2 * SCREW.clear, true), T - 16.5, T))]);
+  const pilot = cyl([S[0], S[1], T - 0.5], [S[0], S[1], T + 13.5], SCREW.pilot);
+  const screw = body(sid, "Wood screw #8 × 1¼", "hardware",
+    [add(cyl([S[0], S[1], T - 16], [S[0], S[1], T + 13], SCREW.r)), add(cyl([S[0], S[1], T - 19], [S[0], S[1], T - 16], SCREW.head_r))]);
+  return { block, screw, pilot, joints: (longId, shortId, topId) => [
+    { type: "glue-block", parts: [id, longId], contact: "touch" },
+    { type: "glue-block", parts: [id, shortId], contact: "touch" },
+    { type: "screw-in-slot", parts: [id, topId], via: [sid], contact: "none" }] };
 }
 
 // ---- D1: solid boards, edge glued ----------------------------------------------
