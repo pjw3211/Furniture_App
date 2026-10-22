@@ -4,7 +4,8 @@ import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { readFileSync } from "fs";
 import { createFurniture } from "../src/furniture.js";
-import { buildTableSolids, TENON, MORTISE_EXTRA_DEPTH } from "../src/cad/table.js";
+import { buildTableSolids } from "../src/cad/table.js";
+import { geom } from "../src/cad/joinery/base.js";
 import { bounds, cutList, cutListCSV, partDXF, partSTL } from "../src/cad/exports.js";
 import { readDXF } from "../src/cad/dxf.js";
 import { loadReplicad } from "./oc-node.js";
@@ -45,10 +46,11 @@ function expectNoOverlaps(parts) {
 describe("exact coffee table", () => {
   it("builds every part as a closed solid", () => {
     const { parts, joints } = buildTableSolids(R, params("coffee_table"));
-    expect(parts.map(p => p.id)).toEqual(["top", "apron-front", "apron-back", "apron-right", "apron-left",
+    expect(parts.filter(p => p.kind === "wood" && p.group !== "fixings").map(p => p.id)).toEqual(["top",
+      "apron-front", "apron-back", "apron-right", "apron-left",
       "leg-front-right", "leg-front-left", "leg-back-right", "leg-back-left"]);
-    for (const p of parts) expect(R.measureVolume(p.solid), p.id).toBeGreaterThan(1000);
-    expect(joints).toHaveLength(8);
+    for (const p of parts.filter(p => p.group !== "fixings")) expect(R.measureVolume(p.solid), p.id).toBeGreaterThan(1000);
+    expect(joints.filter(j => j.type === "mortise-and-tenon")).toHaveLength(8);
   });
 
   it("matches the size of the quick model: 48 x 22 x 16 in", () => {
@@ -65,23 +67,20 @@ describe("exact coffee table", () => {
     expectNoOverlaps(buildTableSolids(R, params("coffee_table")).parts);
   });
 
-  it("cuts mortises the size of the tenons plus glue room", () => {
-    const s = params("coffee_table");
+  it("haunched tenons reach to the other apron's centre line, mitred, with glue room in the mortise", () => {
+    const s = params("coffee_table"), g = geom(s);
     const { parts } = buildTableSolids(R, s);
-    const leg = parts.find(p => p.id === "leg-front-right");
-    const { min, max } = bounds(leg.solid);
-    const legBox = R.makeBox(min, max);
-    const tenon = TENON.t * TENON.h * TENON.d * MM ** 3;
-    // Exactly two aprons reach into this leg, each by one full tenon.
-    const inLeg = parts.filter(p => p.group === "aprons")
-      .map(a => R.measureVolume(a.solid.intersect(legBox))).filter(v => v > 1);
-    expect(inLeg).toHaveLength(2);
-    for (const v of inLeg) expect(v / tenon).toBeCloseTo(1, 2);
-    // The mortises are the tenon plus glue room, so filling them leaves a small gap.
-    const mortise = TENON.t * TENON.h * MM ** 2 * (TENON.d * MM + MORTISE_EXTRA_DEPTH);
-    const filled = R.measureVolume(leg.solid.fuse(parts.find(p => p.id === "apron-front").solid).intersect(legBox));
-    expect(filled - R.measureVolume(leg.solid)).toBeCloseTo(tenon, -1);
-    expect(mortise - tenon).toBeGreaterThan(0);
+    const leg = parts.find(p => p.id === "leg-front-right"), apron = parts.find(p => p.id === "apron-front");
+    // The tenon's far corner reaches the mitre line near the other apron's centre plane.
+    const reach = bounds(apron.solid).max[0] - g.long_half;
+    expect(reach).toBeGreaterThan(g.meet - 9.525);
+    expect(reach).toBeLessThan(g.meet + 9.525 / 2);
+    // Filling the mortise with the tenon leaves the glue room empty.
+    const { min, max } = bounds(leg.solid), legBox = R.makeBox(min, max);
+    const tenonIn = R.measureVolume(apron.solid.intersect(legBox));
+    const hole = R.measureVolume(legBox) - R.measureVolume(leg.solid);
+    expect(tenonIn).toBeGreaterThan(5000);
+    expect(hole).toBeGreaterThan(tenonIn); // mortises are bigger than the tenons
   });
 
   describe("matches the original Fusion parts", () => {
@@ -114,8 +113,7 @@ describe("exact coffee table", () => {
     });
 
   it("side table with its lower shelf builds without overlaps", () => {
-    const { parts, notes } = buildTableSolids(R, params("side_table"));
-    expect(notes.join(" ")).toMatch(/tenons are shortened/);
+    const { parts } = buildTableSolids(R, params("side_table"));
     expect(parts.some(p => p.id === "shelf")).toBe(true);
     expectNoOverlaps(parts);
   });
@@ -124,7 +122,7 @@ describe("exact coffee table", () => {
 describe("exports", () => {
   it("cut list groups identical parts", () => {
     const rows = cutList(buildTableSolids(R, params("coffee_table")).parts);
-    expect(rows.map(r => [r.name, r.qty])).toEqual([["Top", 1], ["Long apron", 2], ["Short apron", 2], ["Leg", 4]]);
+    expect(rows.map(r => [r.name, r.qty])).toEqual([["Top", 1], ["Long apron", 2], ["Short apron", 2], ["Leg", 4], ["Button", 8]]);
     const top = rows[0].finished;
     expect(top.length).toBeCloseTo(48 * MM, 1);
     expect(top.width).toBeCloseTo(22 * MM, 1);
@@ -143,8 +141,7 @@ describe("exports", () => {
     const xs = geo.flatMap(e => e.type === "LINE" ? [+e["10"], +e["11"]]
       : [+e["50"], +e["51"]].map(a => +e["10"] + +e["40"] * Math.cos(a * Math.PI / 180)));
     const width = Math.max(...xs) - Math.min(...xs);
-    const d = s.table_l / 2 - s.inset_x - s.leg_sq / 2;
-    expect(width).toBeCloseTo(2 * (d + TENON.d) * MM, 0);
+    expect(width).toBeCloseTo(bounds(apron.solid).size[0], 0);
   });
 
   it("leg DXF has two views and hidden mortises", () => {

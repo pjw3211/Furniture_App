@@ -47,8 +47,9 @@ test("room tab shows room options", async ({ page }) => {
 
 test("coffee table parts can be downloaded as STL, DXF, cut list and zip", async ({ page }) => {
   await page.locator('[data-type="coffee_table"]').click();
-  await expect(page.locator("#parts-list .prow")).toHaveCount(4, { timeout: 90000 });
+  await expect(page.locator("#parts-list .prow")).toHaveCount(5, { timeout: 90000 });
   await expect(page.locator("#parts-list")).toContainText("Leg × 4");
+  await expect(page.locator("#parts-list")).toContainText("Button × 8");
   for (const [sel, ext] of [['#parts-list .prow >> nth=1 >> [data-k="dxf"]', ".dxf"],
     ['#parts-list .prow >> nth=3 >> [data-k="stl"]', ".stl"], ["#dl-csv", ".csv"], ["#dl-zip", ".zip"]]) {
     const download = page.waitForEvent("download", { timeout: 60000 });
@@ -57,6 +58,21 @@ test("coffee table parts can be downloaded as STL, DXF, cut list and zip", async
   }
   await page.locator("#exact-view").click();
   await expect(page.locator("#exact-view")).toHaveText("Show quick model");
+});
+
+test("picking a joint rebuilds the exact model with it", async ({ page }) => {
+  await page.locator('[data-type="coffee_table"]').click();
+  await expect(page.locator("#parts-list .prow")).toHaveCount(5, { timeout: 90000 });
+  await page.locator('.pick[data-val="dowels"]').click();
+  await expect(page.locator('.pick[data-val="dowels"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#exact-view")).toHaveText("Show quick model");
+  await expect(page.locator("#parts-list .buy")).toContainText("Dowel 10 × 40", { timeout: 90000 });
+  await page.locator('.pick[data-val="z-clips"]').click();
+  await expect(page.locator("#parts-list .buy")).toContainText("8 × Z-clip", { timeout: 90000 });
+  await expect(page.locator("#parts-list .prow")).toHaveCount(4);
+  // Slim aprons are too shallow for two stacked through tenons.
+  await page.locator('.opt:has-text("Slim")').click();
+  await expect(page.locator('.pick[data-val="wedged"]')).toBeDisabled();
 });
 
 test("pieces without exact parts yet say so", async ({ page }) => {

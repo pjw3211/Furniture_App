@@ -1,12 +1,12 @@
 // Exact solid model of the coffee table and side table, built with replicad
 // (OpenCascade). Takes the same parameters as the quick browser model in
 // src/furniture.js (inches and degrees) and returns every part as a solid.
+// The joints (s.joint, s.top_fix) come from src/cad/tableJoinery.js.
 //
 // CAD frame: millimetres, Z up, X along the length, the front of the table
 // faces -Y. This matches the STL frame the app has always exported.
-
-export const TENON = { t: 0.375, h: 1.25, d: 0.75 }; // inches, as in the quick model
-export const MORTISE_EXTRA_DEPTH = 1.5; // mm of glue room below each tenon
+import { buildShape, buildBody } from "./joinery/shapes.js";
+import { tableJoinery, isBought } from "./tableJoinery.js";
 
 const MM = 25.4;
 const D2R = Math.PI / 180;
@@ -92,63 +92,50 @@ function apronProfile(R, half, h, rise) {
   return prof;
 }
 
-// One apron with a tenon on each end, built lying along X then placed.
-// along: "x" for the long aprons, "y" for the short ones. pos = signed offset
-// of the apron's centre plane from the table centre.
+// One apron, plain ended (the joints add tenons or cut slots), built lying
+// along X then placed. along: "x" for the long aprons, "y" for the short
+// ones. pos = signed offset of the apron's centre plane from the table centre.
 function buildApron(R, s, d, along, pos) {
   const half = (along === "x" ? d.long_half : d.short_half) * MM;
   const h = s.apron_h * MM, t = s.apron_t * MM;
   const rise = (along === "x" ? s.arch_rise : s.arch_rise * 0.6) * MM;
-  const tt = TENON.t * MM, th = TENON.h * MM, td = tenonLength(s, d, along);
   // Profile on XZ: sketch on XY, extrude, then turn up.
   let body = apronProfile(R, half, h, rise).sketchOnPlane("XY").extrude(t).translate([0, 0, -t / 2]);
-  const vMid = -h / 2;
-  for (const sgn of [1, -1]) {
-    const x0 = sgn > 0 ? half : -half - td, x1 = sgn > 0 ? half + td : -half;
-    body = body.fuse(R.makeBox([x0, vMid - th / 2, -tt / 2], [x1, vMid + th / 2, tt / 2]));
-  }
-  body = body.simplify().rotate(90, [0, 0, 0], [1, 0, 0]); // local v -> Z, thickness -> Y
+  body = body.rotate(90, [0, 0, 0], [1, 0, 0]); // local v -> Z, thickness -> Y
   if (along === "y") body = body.rotate(90, [0, 0, 0], [0, 0, 1]);
   const off = along === "x" ? [0, pos, d.apron_top * MM] : [pos, 0, d.apron_top * MM];
   return body.translate(off);
 }
 
-// The tenon on one end of an apron, as a box in the CAD frame, made a little
-// deeper so it can be cut from the leg as the mortise.
-function mortiseBox(R, s, d, along, pos, end) {
-  const tt = TENON.t * MM, th = TENON.h * MM, td = tenonLength(s, d, along) + MORTISE_EXTRA_DEPTH;
-  const zc = (d.apron_top - s.apron_h / 2) * MM;
-  const half = (along === "x" ? d.long_half : d.short_half) * MM;
-  const a0 = end * half, a1 = end * (half + td);
-  const [lo, hi] = [Math.min(a0, a1), Math.max(a0, a1)];
-  return along === "x"
-    ? R.makeBox([lo, pos - tt / 2, zc - th / 2], [hi, pos + tt / 2, zc + th / 2])
-    : R.makeBox([pos - tt / 2, lo, zc - th / 2], [pos + tt / 2, hi, zc + th / 2]);
-}
-
-// Tenon length for an apron. On small tables the two tenons entering one leg
-// would meet inside it, so they are shortened to leave 1 mm between them.
-export function tenonLength(s, d, along) {
-  const half = along === "x" ? d.long_half : d.short_half;
-  const otherRail = along === "x" ? d.rail_x : d.rail_y;
-  const room = (otherRail - TENON.t / 2 - half) * MM - 1;
-  return Math.max(6, Math.min(TENON.d * MM, room));
+// Apply joinery steps (add, cut or keep-common shapes) to a solid.
+function applySteps(R, solid, steps) {
+  for (const st of steps) {
+    const sh = buildShape(R, st.shape);
+    solid = st.op === "add" ? solid.fuse(sh) : st.op === "cut" ? solid.cut(sh) : solid.intersect(sh);
+  }
+  return solid.simplify();
 }
 
 const box = (R, x0, x1, y0, y1, z0, z1) => R.makeBox([x0, y0, z0], [x1, y1, z1]);
 
 /**
- * Build every part of a table as an exact solid.
- * @returns {{ parts: Array<{id, name, group, material, solid}>, joints: Array, notes: string[] }}
+ * Build every part of a table as an exact solid, with the chosen joints.
+ * Parts have a kind (wood, tenon, hardware) and `bought` for the ones you
+ * buy rather than make.
+ * @returns {{ parts: Array<{id, name, group, kind, bought, material, solid}>, joints: Array, notes: string[] }}
  */
 export function buildTableSolids(R, s) {
   const d = tableDerive(s), notes = [];
-  const parts = [], joints = [];
+  const parts = [];
   const material = s.finish || "walnut";
+  const J = tableJoinery(s);
+  const wood = (id, name, group, solid) => ({ id, name, group, kind: "wood", bought: false, material, solid });
 
-  parts.push({ id: "top", name: "Top", group: "top", material, solid: buildTop(R, s, d, notes) });
+  let top = buildTop(R, s, d, notes);
+  for (const sh of J.top) top = top.cut(buildShape(R, sh));
+  parts.push(wood("top", "Top", "top", top));
 
-  // Aprons: two long (front and back), two short (ends). CAD y = -three z.
+  // Aprons: two long (front and back), two short (ends).
   const aprons = [
     { id: "apron-front", name: "Long apron", along: "x", pos: -d.rail_y * MM },
     { id: "apron-back", name: "Long apron", along: "x", pos: d.rail_y * MM },
@@ -156,31 +143,25 @@ export function buildTableSolids(R, s) {
     { id: "apron-left", name: "Short apron", along: "y", pos: -d.rail_x * MM },
   ];
   for (const a of aprons)
-    parts.push({ id: a.id, name: a.name, group: "aprons", material, solid: buildApron(R, s, d, a.along, a.pos) });
+    parts.push(wood(a.id, a.name, "aprons", applySteps(R, buildApron(R, s, d, a.along, a.pos), J.apron[a.id])));
 
-  // Legs, each with the two mortises for the aprons that meet it.
   for (const [sx, sy, id] of [[1, -1, "leg-front-right"], [-1, -1, "leg-front-left"], [1, 1, "leg-back-right"], [-1, 1, "leg-back-left"]]) {
     let leg = buildLeg(R, s, d, sx, sy);
-    const longA = aprons.find(a => a.along === "x" && Math.sign(a.pos) === sy);
-    const shortA = aprons.find(a => a.along === "y" && Math.sign(a.pos) === sx);
-    leg = leg.cut(mortiseBox(R, s, d, "x", longA.pos, sx)).cut(mortiseBox(R, s, d, "y", shortA.pos, sy));
-    parts.push({ id, name: "Leg", group: "legs", material, solid: leg });
-    for (const a of [longA, shortA]) {
-      const len = tenonLength(s, d, a.along);
-      joints.push({ type: "mortise-and-tenon", parts: [a.id, id],
-        tenon_mm: { thickness: TENON.t * MM, height: TENON.h * MM, length: len },
-        mortise_depth_mm: len + MORTISE_EXTRA_DEPTH });
-    }
+    for (const sh of J.leg[id]) leg = leg.cut(buildShape(R, sh));
+    parts.push(wood(id, "Leg", "legs", leg.simplify()));
   }
 
-  const shortest = Math.min(tenonLength(s, d, "x"), tenonLength(s, d, "y"));
-  if (shortest < TENON.d * MM - 0.01)
-    notes.push(`The legs are small for the aprons, so tenons are shortened to ${shortest.toFixed(1)} mm to clear each other inside the legs.`);
+  for (const { body, group } of J.parts) {
+    const own = body.kind === "wood";
+    parts.push({ id: body.id, name: body.name, group, kind: body.kind, bought: isBought(body),
+      material: own ? material : body.material, solid: buildBody(R, body) });
+  }
+
   if (s.shelf) {
     const z = s.shelf_h * MM, t = 0.75 * MM;
-    parts.push({ id: "shelf", name: "Lower shelf", group: "shelf", material,
-      solid: box(R, -d.long_half * MM, d.long_half * MM, -d.short_half * MM, d.short_half * MM, z - t, z) });
+    parts.push(wood("shelf", "Lower shelf", "shelf",
+      box(R, -d.long_half * MM, d.long_half * MM, -d.short_half * MM, d.short_half * MM, z - t, z)));
     notes.push("The lower shelf sits on cleats screwed to the legs; the cleats are not modelled yet.");
   }
-  return { parts, joints, notes };
+  return { parts, joints: J.joints, notes: [...J.notes, ...notes] };
 }

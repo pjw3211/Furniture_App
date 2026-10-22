@@ -30,10 +30,10 @@ export function roughSize(fin, allow = ALLOWANCE) {
 
 const key = (p, fin) => [p.name, p.material, fin.length.toFixed(1), fin.width.toFixed(1), fin.thickness.toFixed(1)].join("|");
 
-/** Group identical parts into cut list rows. */
+/** Group identical parts you make into cut list rows. Bought parts are left out. */
 export function cutList(parts) {
   const rows = new Map();
-  for (const p of parts) {
+  for (const p of parts.filter(p => !p.bought)) {
     const fin = finishedSize(p.solid), k = key(p, fin);
     if (rows.has(k)) { rows.get(k).qty++; rows.get(k).ids.push(p.id); continue; }
     rows.set(k, { name: p.name, material: p.material, qty: 1, ids: [p.id], finished: fin, rough: roughSize(fin) });
@@ -41,9 +41,19 @@ export function cutList(parts) {
   return [...rows.values()];
 }
 
+/** Parts to buy (screws, clips, Dominoes, dowels) with how many of each. */
+export function hardwareList(parts) {
+  const rows = new Map();
+  for (const p of parts.filter(p => p.bought)) {
+    const r = rows.get(p.name) || { name: p.name, qty: 0, ids: [] };
+    r.qty++; r.ids.push(p.id); rows.set(p.name, r);
+  }
+  return [...rows.values()];
+}
+
 const inch = mm => (mm / MM).toFixed(2);
 
-export function cutListCSV(rows, title = "Cut list") {
+export function cutListCSV(rows, title = "Cut list", hardware = []) {
   const out = [[title], [],
     ["Part", "Qty", "Material", "Length mm", "Width mm", "Thickness mm", "Length in", "Width in", "Thickness in",
       "Rough length mm", "Rough width mm", "Stock thickness mm"]];
@@ -53,6 +63,7 @@ export function cutListCSV(rows, title = "Cut list") {
       inch(f.length), inch(f.width), inch(f.thickness), g.length, g.width, g.thickness]);
   }
   out.push([], [`Rough sizes add ${ALLOWANCE.length} mm to length and ${ALLOWANCE.width} mm to width; stock thickness is the next common size up.`]);
+  if (hardware.length) out.push([], ["To buy", "Qty"], ...hardware.map(h => [h.name, h.qty]));
   return out.map(r => r.map(c => /[",]/.test(String(c)) ? `"${String(c).replace(/"/g, '""')}"` : c).join(",")).join("\n") + "\n";
 }
 

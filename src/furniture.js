@@ -8,6 +8,8 @@
 // origin is on the floor, centred under the piece. A builder returns a list
 // of { geo, mat } where mat is one of "wood", "fabric", "accent", "brass",
 // "dark".
+import { JOINTS, TOP_FIXINGS, DEFAULT_JOINT, DEFAULT_TOP_FIX } from "./cad/tableJoinery.js";
+
 export function createFurniture(THREE, deps) {
   const { toCreasedNormals, RoundedBoxGeometry } = deps;
   const D2R = THREE.MathUtils.degToRad;
@@ -327,11 +329,15 @@ export function createFurniture(THREE, deps) {
     { title: "Lower shelf", sliders: [
       ["shelf", "Shelf", [[0, "None"], [1, "Shelf"]]],
       ["shelf_h", "Shelf height", 3, 16, 0.25, "in", s => !!s.shelf]] },
+    { title: "Joinery", sub: "Picking a joint shows the exact model, with every joint cut.", choices: [
+      ["joint", "Legs to aprons", JOINTS],
+      ["top_fix", "Holding the top on", TOP_FIXINGS]] },
   ];
   const TABLE_BASE = {
     top_mode: "rect", top_t: 1, corner_r: 0, se_n: 2.5, top_bevel: 18.5, edge_r: 0,
     leg_section: "square", leg_sq: 1.75, foot: 1, splay_ang: 0,
     apron_h: 3, apron_t: 0.75, apron_set: 0.25, arch_rise: 0, shelf: 0, shelf_h: 6,
+    joint: DEFAULT_JOINT, top_fix: DEFAULT_TOP_FIX,
   };
 
   // ------------------------------------------------------------------

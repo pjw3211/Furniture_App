@@ -1,5 +1,6 @@
 import { createFurniture } from "./furniture.js";
 import { cad, EXACT_TYPES } from "./cad/client.js";
+import { unavailable } from "./cad/tableJoinery.js";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -40,6 +41,9 @@ function materialsFor(p) {
     accent: new THREE.MeshStandardMaterial({ color: pick(ACCENTS, p.accent), roughness: 0.45, side: THREE.DoubleSide }),
     brass: new THREE.MeshStandardMaterial({ color: 0xc09a45, roughness: 0.3, metalness: 0.9 }),
     dark: new THREE.MeshStandardMaterial({ color: 0x241b15, roughness: 0.8, side: THREE.DoubleSide }),
+    steel: new THREE.MeshStandardMaterial({ color: 0x8a9096, roughness: 0.35, metalness: 0.85 }),
+    beech: new THREE.MeshStandardMaterial({ color: 0xd9b98c, roughness: 0.6 }),
+    maple: new THREE.MeshStandardMaterial({ color: 0xe8d3a8, roughness: 0.6 }),
   };
 }
 
@@ -579,6 +583,25 @@ function buildDesignerUI() {
       if (G.materials.fabric) add("Fabric", FABRICS, "fabric");
       if (G.materials.accent) add("Accent (fronts)", ACCENTS, "accent");
     }
+    if (G.sub) {
+      const p = document.createElement("p"); p.className = "sub"; p.textContent = G.sub; box.append(p);
+    }
+    if (G.choices) {
+      // A list of named options with a line about each, e.g. joints.
+      for (const [key, label, options] of G.choices) {
+        const l = document.createElement("div"); l.className = "swlabel"; l.textContent = label; box.append(l);
+        const wrap = document.createElement("div"); wrap.className = "picks"; box.append(wrap);
+        for (const o of options) {
+          const b = document.createElement("button"); b.className = "pick"; b.dataset.val = o.id;
+          b.innerHTML = `<b></b><small></small>`;
+          b.querySelector("b").textContent = o.name;
+          b.querySelector("small").textContent = o.desc;
+          b.onclick = () => { cur.params[key] = o.id; updateDesign(); setExactView(true); };
+          wrap.append(b);
+        }
+        sliderEls[key] = { wrap, choice: true, pick: true };
+      }
+    }
     if (G.sliders) {
       const sb = document.createElement("div"); sb.className = "sliders"; box.append(sb);
       for (const def of G.sliders) {
@@ -635,6 +658,10 @@ function updateDesign(changedKey) {
     el.wrap.style.display = el.showIf && !el.showIf(s) ? "none" : "";
     if (el.choice) {
       el.wrap.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(s[key]) === b.dataset.val));
+      if (el.pick) el.wrap.querySelectorAll("button").forEach(b => {
+        const why = unavailable(s, key, b.dataset.val);
+        b.disabled = !!why; b.title = why || "";
+      });
     } else {
       const inp = el.wrap.querySelector("input");
       if (el.dyn) { const d = el.dyn(s); if (d.max !== undefined) inp.max = d.max; }
@@ -667,7 +694,7 @@ function updateDesign(changedKey) {
 //  Exact parts: solids, STL, DXF and cut list from the CAD worker
 // =====================================================================
 let exactTimer = 0, exactSeq = 0, exactGroup = null, showExact = false, exactReady = false;
-const exactLift = { top: 8.5, aprons: 3.5, shelf: 0, legs: 0 };
+const exactLift = { top: 8.5, fixings: 6, aprons: 3.5, shelf: 0, legs: 0, joinery: 0 };
 const mmIn = mm => `${(mm / 25.4).toFixed(2)}`;
 const sizeText = f => `${Math.round(f.length)} × ${Math.round(f.width)} × ${Math.round(f.thickness)} mm` +
   ` · ${mmIn(f.length)} × ${mmIn(f.width)} × ${mmIn(f.thickness)} in`;
@@ -731,6 +758,14 @@ function renderParts(res) {
     row.querySelector('[data-k="dxf"]').onclick = () => exportFile(`${file}.dxf`, "dxf", { partId: id }, "application/dxf");
     list.append(row);
   }
+  if (res.hardware?.length) {
+    const h = document.createElement("div"); h.className = "buy";
+    h.innerHTML = `<b>To buy</b>`;
+    for (const r of res.hardware) {
+      const line = document.createElement("div"); line.textContent = `${r.qty} × ${r.name}`; h.append(line);
+    }
+    list.append(h);
+  }
   $("exact-notes").textContent = res.notes.join(" ");
 }
 
@@ -745,7 +780,7 @@ function showExactMeshes(meshes) {
     g.setAttribute("position", new THREE.BufferAttribute(m.vertices, 3));
     g.setAttribute("normal", new THREE.BufferAttribute(m.normals, 3));
     g.setIndex(new THREE.BufferAttribute(m.triangles, 1));
-    const mesh = new THREE.Mesh(g, mats.wood);
+    const mesh = new THREE.Mesh(g, m.kind === "wood" ? mats.wood : mats[m.material] || mats.steel);
     mesh.castShadow = mesh.receiveShadow = true;
     mesh.userData.group = m.group;
     exactGroup.add(mesh);

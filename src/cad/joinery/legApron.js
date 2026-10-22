@@ -83,14 +83,16 @@ export function mtRounded(o = {}) {
 export const DOMINO = { "8x40": { t: 8, w: 22, l: 40 }, "10x50": { t: 10, w: 24, l: 50 }, "5x30": { t: 5, w: 19, l: 30 } };
 export function looseTenon(o) {
   return (g, c, which, A) => {
-    const D = DOMINO[o.size], depth = D.l / 2 + 1, F = endFaceFrame(A);
+    const D = DOMINO[o.size], F = endFaceFrame(A);
+    // e = how far the Domino goes into the leg; the rest goes into the apron.
+    const e = o.leg_depth ?? D.l / 2, depth = e + 1, aDepth = D.l - e + 1;
     const zs = (o.heights[which]).map(dz => g.apron_mid + dz);
     const apron = [], leg = [], extra = [];
     zs.forEach((z, i) => {
       const slot = (len, wid) => stadium(0, z, len, wid, true);
-      apron.push(cut(prism(slot(D.w + 2 * HOLE_CLEAR, D.t + 2 * HOLE_CLEAR), -depth, 0.5, F)));
+      apron.push(cut(prism(slot(D.w + 2 * HOLE_CLEAR, D.t + 2 * HOLE_CLEAR), -aDepth, 0.5, F)));
       leg.push(prism(slot(D.w + 2 * HOLE_CLEAR, D.t + 2 * HOLE_CLEAR), -0.5, depth, F));
-      extra.push(body(`domino-${which}-${i + 1}`, `Domino ${o.size}`, "tenon", [add(prism(slot(D.w, D.t), -D.l / 2, D.l / 2, F))]));
+      extra.push(body(`domino-${which}-${i + 1}`, `Domino ${o.size}`, "tenon", [add(prism(slot(D.w, D.t), e - D.l, e, F))]));
     });
     return { apron, leg, extra, joints: [{ type: "loose-tenon", parts: [apronId(c, which), legId(c)], via: extra.map(b => b.id) }] };
   };
@@ -99,12 +101,12 @@ export function looseTenon(o) {
 // ---- A3: dowels -------------------------------------------------------------
 export function dowels(o) {
   return (g, c, which, A) => {
-    const r = o.d / 2, half = o.l / 2, apron = [], leg = [], extra = [];
+    const r = o.d / 2, e = o.leg_depth ?? o.l / 2, apron = [], leg = [], extra = [];
     o.heights[which].forEach((dz, i) => {
       const z = g.apron_mid + dz;
-      apron.push(cut(cylA(A, -half - 1, 0.5, 0, z, r + HOLE_CLEAR)));
-      leg.push(cylA(A, -0.5, half + 1, 0, z, r + HOLE_CLEAR));
-      extra.push(body(`dowel-${which}-${i + 1}`, `Dowel ${o.d} × ${o.l}`, "tenon", [add(cylA(A, -half, half, 0, z, r))]));
+      apron.push(cut(cylA(A, e - o.l - 1, 0.5, 0, z, r + HOLE_CLEAR)));
+      leg.push(cylA(A, -0.5, e + 1, 0, z, r + HOLE_CLEAR));
+      extra.push(body(`dowel-${which}-${i + 1}`, `Dowel ${o.d} × ${o.l}`, "tenon", [add(cylA(A, e - o.l, e, 0, z, r))]));
     });
     return { apron, leg, extra, joints: [{ type: "dowel", parts: [apronId(c, which), legId(c)], via: extra.map(b => b.id) }] };
   };
@@ -112,15 +114,16 @@ export function dowels(o) {
 
 // ---- A4: corner bracket and hanger bolt (knock-down) ------------------------
 export function bracketBolt(o = {}) {
-  const k = o.kerf_from_end ?? 24, kw = 3.2, kd = 9.5, pt = 2.5, bh = 50;
+  const k = o.kerf_from_end ?? 24, kw = 3.2, kd = 9.5, pt = 2.5, bh = o.bracket_h ?? 50;
+  const dz = o.dowel_dz ?? [-20, 20], boltIn = o.bolt_in ?? 40;
   let done = false;
   return (g, c, which, A) => {
     // Kerf across the apron's inside face, and two alignment dowels.
     const apron = [cut(box([-k - kw / 2, A.ins > 0 ? g.apron_t / 2 - kd : -g.apron_t / 2 - 1,
       g.apron_top - g.apron_h - 1], [-k + kw / 2, A.ins > 0 ? g.apron_t / 2 + 1 : -g.apron_t / 2 + kd, g.apron_top + 1], A.F))];
     const leg = [], extra = [];
-    [-20, 20].forEach((dz, i) => {
-      const z = g.apron_mid + dz;
+    dz.forEach((d, i) => {
+      const z = g.apron_mid + d;
       apron.push(cut(cylA(A, -16, 0.5, 0, z, 4 + HOLE_CLEAR)));
       leg.push(cylA(A, -0.5, 16, 0, z, 4 + HOLE_CLEAR));
       extra.push(body(`dowel-${which}-${i + 1}`, "Alignment dowel 8 × 30", "tenon", [add(cylA(A, -15, 15, 0, z, 4))]));
@@ -143,12 +146,12 @@ export function bracketBolt(o = {}) {
       extra.push(body("corner-bracket", "Corner bracket (steel)", "hardware",
         [add(web), add(lf), add(sf), cut(cyl(vadd(M, vscale(nIn, -1)), vadd(M, vscale(nIn, pt + 1)), 4.5))]));
       extra.push(body("hanger-bolt", "Hanger bolt M8 × 75", "hardware",
-        [add(cyl(vadd(face, vscale(nIn, -40)), vadd(M, vscale(nIn, pt + 6.5 + 4)), 4))]));
+        [add(cyl(vadd(face, vscale(nIn, -boltIn)), vadd(M, vscale(nIn, pt + 6.5 + 4)), 4))]));
       extra.push(body("nut", "M8 nut", "hardware",
         [add(cyl(vadd(M, vscale(nIn, pt)), vadd(M, vscale(nIn, pt + 6.5)), 6.5)), cut(cyl(vadd(M, vscale(nIn, pt - 1)), vadd(M, vscale(nIn, pt + 7.5)), 4 + HOLE_CLEAR))]));
       // Flat on the leg's inside corner (head only) and the bolt's hole.
       leg.push(box([g.head_z0, -100, 0], [g.apron_top + 1, 100, 100], frame([face[0], face[1], 0], [0, 0, 1], nIn)));
-      leg.push(cyl(vadd(face, vscale(nIn, 1)), vadd(face, vscale(nIn, -41)), 4 + HOLE_CLEAR));
+      leg.push(cyl(vadd(face, vscale(nIn, 1)), vadd(face, vscale(nIn, -boltIn - 1)), 4 + HOLE_CLEAR));
       joints.push({ type: "hanger-bolt", parts: ["hanger-bolt", legId(c)] }, { type: "nut", parts: ["nut", "hanger-bolt"] },
         { type: "nut-on-bracket", parts: ["nut", "corner-bracket"] });
     }
@@ -162,7 +165,7 @@ export function pocketScrews(o = {}) {
   return (g, c, which, A) => {
     const d = [Math.cos(ang), -A.ins * Math.sin(ang), 0], apron = [], leg = [], extra = [];
     const pt = s => [d[0] * s, d[1] * s]; // point along the axis from the exit point, local a/b
-    [-18, 18].forEach((dz, i) => {
+    (o.heights?.[which] ?? [-18, 18]).forEach((dz, i) => {
       const z = g.apron_mid + dz, P0 = s => at(A.F, [...pt(s), z]);
       apron.push(cut(cyl(P0(-(len - intoLeg)), P0(-60), bore)));             // stepped pocket
       apron.push(cut(cyl(P0(1), P0(-(len - intoLeg) - 1), SCREW.clear)));
@@ -178,9 +181,9 @@ export function pocketScrews(o = {}) {
 
 // ---- A6: wedged through tenon ---------------------------------------------
 export function throughWedged(o = {}) {
-  const tt = 9.525, th = 25.4, proud = 1.5, kerf = 2.2, kdepth = 25, flare = 1.5;
+  const tt = o.tenon_t ?? 9.525, th = o.tenon_w ?? 25.4, proud = 1.5, kerf = 2.2, flare = 1.5;
   return (g, c, which, A) => {
-    const top = g.apron_top, sh = 9.525;
+    const top = g.apron_top, sh = 9.525, kdepth = Math.min(25, g.leg_sq - 8);
     const zt = which === "long" ? top - sh : top - sh - th - 6.35, zb = zt - th;
     const through = g.leg_sq, L = through + proud, fit = FIT.standard;
     const apron = [add(box([0, -tt / 2, zb], [L, tt / 2, zt], A.F))];
