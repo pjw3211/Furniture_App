@@ -337,7 +337,7 @@ def main():
     global _app, _ui
     _app = adsk.core.Application.get()
     _ui = _app.userInterface
-    with open(os.path.join(SPEC_DIR, "index.json")) as fh:
+    with open(os.path.join(SPEC_DIR, "index.json"), encoding="utf-8") as fh:
         index = json.load(fh)
     ids = [m["id"] for m in index["models"] if not ONLY or m["id"] in ONLY]
 
@@ -353,7 +353,7 @@ def main():
     log, summary = [], []
 
     for i, mid in enumerate(ids):
-        with open(os.path.join(SPEC_DIR, mid + ".json")) as fh:
+        with open(os.path.join(SPEC_DIR, mid + ".json"), encoding="utf-8") as fh:
             m = json.load(fh)
         log.append("%s: %s" % (mid, m.get("title", "")))
         comp, failed = build_model(bld, m, i, log)
@@ -367,7 +367,7 @@ def main():
                 log.append("  STEP export failed:\n" + traceback.format_exc())
 
     if not ONLY:
-        with open(os.path.join(SPEC_DIR, "profiles.json")) as fh:
+        with open(os.path.join(SPEC_DIR, "profiles.json"), encoding="utf-8") as fh:
             prof = json.load(fh)
         sketches = build_profiles(bld, prof, len(ids), log)
         if EXPORT_DXF:
@@ -386,7 +386,7 @@ def main():
         except Exception:
             log.append("f3d export failed:\n" + traceback.format_exc())
 
-    with open(os.path.join(OUT_DIR, "log.txt"), "w") as fh:
+    with open(os.path.join(OUT_DIR, "log.txt"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(summary) + "\n\n" + "\n".join(log) + "\n")
     bad = [s for s in summary if "failed" in s]
     msg = "Built %d models. Files are in:\n%s" % (len(ids), OUT_DIR)
