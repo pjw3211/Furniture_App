@@ -23,7 +23,8 @@ export function overlaps(R, built) {
   for (let i = 0; i < real.length; i++) for (let j = i + 1; j < real.length; j++) {
     const a = real[i], b = real[j];
     if (!boxesTouch(a.box, b.box)) continue;
-    const v = R.measureVolume(a.solid.intersect(b.solid));
+    const common = a.solid.intersect(b.solid), v = R.measureVolume(common);
+    common.delete();
     if (v > 1) bad.push(`${a.b.id} × ${b.b.id}: ${v.toFixed(1)} mm³`);
   }
   return bad;

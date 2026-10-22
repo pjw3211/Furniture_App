@@ -17,5 +17,3 @@ export function cad(cmd, data = {}) {
   const id = ++seq;
   return new Promise((resolve, reject) => { pending.set(id, { resolve, reject }); worker.postMessage({ id, cmd, ...data }); });
 }
-
-export const EXACT_TYPES = new Set(["coffee_table", "side_table"]);

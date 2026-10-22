@@ -2,26 +2,16 @@
 // must be a real solid, nothing may overlap, and every joint must actually
 // join (tenons in mortises, dowels and screws in both parts).
 import { describe, it, expect, beforeAll } from "vitest";
-import * as THREE from "three";
-import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
-import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import { createFurniture } from "../src/furniture.js";
+import { params, preset } from "./table-params.js";
 import { buildTableSolids } from "../src/cad/table.js";
 import { JOINTS, TOP_FIXINGS, unavailable, tableJoinery } from "../src/cad/tableJoinery.js";
 import { bounds, cutList, hardwareList, cutListCSV } from "../src/cad/exports.js";
 import { overlaps, missingJoints } from "./joinery-helpers.js";
 import { loadReplicad } from "./oc-node.js";
 
-const F = createFurniture(THREE, { toCreasedNormals, RoundedBoxGeometry });
-const T = Object.fromEntries(F.types.map(t => [t.id, t]));
 let R;
 beforeAll(async () => { R = await loadReplicad(); }, 60000);
 
-function params(typeId, extra = {}) {
-  const s = { ...T[typeId].defaults, ...extra };
-  T[typeId].clamp(s);
-  return s;
-}
 
 // The app's parts in the shape the joinery checks expect.
 function check(s) {
@@ -33,6 +23,8 @@ function check(s) {
   for (const x of built) expect(R.measureVolume(x.solid), x.b.id).toBeGreaterThan(1);
   expect(overlaps(R, built), "overlapping parts").toEqual([]);
   expect(missingJoints(R, { joints }, built), "joints that don't join").toEqual([]);
+  // Free the solids: the engine's memory is shared by every test in the file.
+  for (const p of parts) p.solid.delete();
   return { parts, joints, notes };
 }
 

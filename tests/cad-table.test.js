@@ -1,28 +1,18 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import * as THREE from "three";
-import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
-import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { readFileSync } from "fs";
-import { createFurniture } from "../src/furniture.js";
+import { params, preset } from "./table-params.js";
 import { buildTableSolids } from "../src/cad/table.js";
 import { geom } from "../src/cad/joinery/base.js";
 import { bounds, cutList, cutListCSV, partDXF, partSTL } from "../src/cad/exports.js";
 import { readDXF } from "../src/cad/dxf.js";
 import { loadReplicad } from "./oc-node.js";
 
-const F = createFurniture(THREE, { toCreasedNormals, RoundedBoxGeometry });
-const T = Object.fromEntries(F.types.map(t => [t.id, t]));
 const MM = 25.4;
 const REF = JSON.parse(readFileSync(new URL("../reference/coffee-table/parts.json", import.meta.url)));
 let R;
 beforeAll(async () => { R = await loadReplicad(); }, 60000);
 
-function params(typeId, extra = {}) {
-  const t = T[typeId], s = { ...t.defaults, ...extra };
-  t.clamp(s);
-  return s;
-}
-const preset = (typeId, group, id) => T[typeId].groups.find(g => g.title === group).presets.find(p => p.id === id).p;
 
 function groupBox(parts, group) {
   const b = new THREE.Box3();

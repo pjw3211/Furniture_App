@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { readFileSync } from "fs";
 
 test.beforeEach(async ({ page }) => {
   const errors = [];
@@ -6,6 +7,8 @@ test.beforeEach(async ({ page }) => {
   page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
   page.errors = errors;
   await page.goto("/");
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
   await page.waitForFunction(() => window.__ready === true, null, { timeout: 30000 });
 });
 
@@ -13,70 +16,69 @@ test.afterEach(async ({ page }) => {
   expect(page.errors).toEqual([]);
 });
 
-test("opens with all six furniture types", async ({ page }) => {
-  for (const id of ["coffee_table", "side_table", "sofa", "lounge_chair", "credenza", "bookcase"])
-    await expect(page.locator(`[data-type="${id}"]`)).toBeVisible();
-  await expect(page.locator("#err")).toBeHidden();
+const built = page => page.evaluate(() => window.__built || 0);
+async function waitForBuild(page, after) {
+  await expect.poll(() => built(page), { timeout: 90000 }).toBeGreaterThan(after);
+  await expect(page.locator("#dl-pdf")).toBeEnabled();
+}
+
+test("choose the coffee table, pick from the dropdowns, download the DXF and cut list", async ({ page }) => {
+  await expect(page.locator("#home")).toBeVisible();
+  await page.locator('[data-piece="coffee_table"]').click();
+  await expect(page.locator("#design")).toBeVisible();
+  for (const title of ["Size", "Features", "Profiles", "Joinery"])
+    await expect(page.locator("section h3", { hasText: title })).toBeVisible();
+  await waitForBuild(page, 0);
+  await expect(page.locator("#parts")).toContainText("Leg");
+
+  // A slatted shelf, pegs and loose tenons: the parts list follows.
+  let n = await built(page);
+  await page.selectOption("#f-shelf", "slats");
+  await waitForBuild(page, n);
+  await expect(page.locator("#parts")).toContainText("Shelf slat");
+  n = await built(page);
+  await page.selectOption("#f-joint", "domino");
+  await waitForBuild(page, n);
+  n = await built(page);
+  await page.selectOption("#f-pegs", "pegged");
+  await waitForBuild(page, n);
+  await expect(page.locator("#buy")).toContainText("Domino");
+  await expect(page.locator("#buy")).toContainText("Dowel peg");
+
+  // Pegs rule out joints without a tenon.
+  await expect(page.locator('#f-joint option[value="dowels"]')).toBeDisabled();
+
+  const dxf = page.waitForEvent("download", { timeout: 60000 });
+  await page.locator("#dl-dxf").click();
+  const d = await dxf;
+  expect(d.suggestedFilename()).toMatch(/\.dxf$/);
+  const text = readFileSync(await d.path(), "utf8");
+  expect(text).toContain("Shelf slat");
+  expect(text).toContain("ENTITIES");
+
+  const pdf = page.waitForEvent("download", { timeout: 60000 });
+  await page.locator("#dl-pdf").click();
+  const p = await pdf;
+  expect(p.suggestedFilename()).toMatch(/\.pdf$/);
+  expect(readFileSync(await p.path()).subarray(0, 5).toString()).toBe("%PDF-");
 });
 
-test("every type can be opened in the designer", async ({ page }) => {
-  for (const id of ["coffee_table", "side_table", "sofa", "lounge_chair", "credenza", "bookcase"]) {
-    await page.locator(`[data-type="${id}"]`).click();
-    await expect.poll(() => page.evaluate(() => window.__app.cur().type)).toBe(id);
-  }
+test("custom size in millimetres", async ({ page }) => {
+  await page.locator('[data-piece="coffee_table"]').click();
+  await waitForBuild(page, 0);
+  await page.locator('[data-units="mm"]').click();
+  const n = await built(page);
+  await page.selectOption("#f-size", "custom");
+  await page.fill("#d-l", "1100");
+  await page.locator("#d-l").dispatchEvent("change");
+  await expect.poll(() => page.evaluate(() => window.__app.state().choice.l)).toBeCloseTo(1100 / 25.4, 0);
+  await waitForBuild(page, n);
+  await expect(page.locator("#parts")).toContainText("1100 ×");
 });
 
-test("a piece can be saved, placed in the room and exported", async ({ page }) => {
-  await page.locator('[data-type="credenza"]').click();
-  const before = await page.evaluate(() => window.__app.items().length);
-  await page.locator("#place").click();
-  await expect.poll(() => page.evaluate(() => window.__app.items().length)).toBeGreaterThan(before);
-
-  await page.locator("#tab-design").click();
-  const download = page.waitForEvent("download");
-  await page.locator("#dl-stl").click();
-  expect((await download).suggestedFilename()).toMatch(/\.stl$/);
-});
-
-test("room tab shows room options", async ({ page }) => {
-  await page.locator("#tab-room").click();
-  await expect(page.locator("#pane-room")).toBeVisible();
-  await expect(page.locator("#arrange")).toBeVisible();
-  await page.locator("#arrange").click();
-});
-
-test("coffee table parts can be downloaded as STL, DXF, cut list and zip", async ({ page }) => {
-  await page.locator('[data-type="coffee_table"]').click();
-  await expect(page.locator("#parts-list .prow")).toHaveCount(5, { timeout: 90000 });
-  await expect(page.locator("#parts-list")).toContainText("Leg × 4");
-  await expect(page.locator("#parts-list")).toContainText("Button × 8");
-  for (const [sel, ext] of [['#parts-list .prow >> nth=1 >> [data-k="dxf"]', ".dxf"],
-    ['#parts-list .prow >> nth=3 >> [data-k="stl"]', ".stl"], ["#dl-csv", ".csv"], ["#dl-zip", ".zip"]]) {
-    const download = page.waitForEvent("download", { timeout: 60000 });
-    await page.locator(sel).click();
-    expect((await download).suggestedFilename()).toMatch(new RegExp(ext.replace(".", "\\.") + "$"));
-  }
-  await page.locator("#exact-view").click();
-  await expect(page.locator("#exact-view")).toHaveText("Show quick model");
-});
-
-test("picking a joint rebuilds the exact model with it", async ({ page }) => {
-  await page.locator('[data-type="coffee_table"]').click();
-  await expect(page.locator("#parts-list .prow")).toHaveCount(5, { timeout: 90000 });
-  await page.locator('.pick[data-val="dowels"]').click();
-  await expect(page.locator('.pick[data-val="dowels"]')).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator("#exact-view")).toHaveText("Show quick model");
-  await expect(page.locator("#parts-list .buy")).toContainText("Dowel 10 × 40", { timeout: 90000 });
-  await page.locator('.pick[data-val="z-clips"]').click();
-  await expect(page.locator("#parts-list .buy")).toContainText("8 × Z-clip", { timeout: 90000 });
-  await expect(page.locator("#parts-list .prow")).toHaveCount(4);
-  // Slim aprons are too shallow for two stacked through tenons.
-  await page.locator('.opt:has-text("Slim")').click();
-  await expect(page.locator('.pick[data-val="wedged"]')).toBeDisabled();
-});
-
-test("pieces without exact parts yet say so", async ({ page }) => {
-  await page.locator('[data-type="sofa"]').click();
-  await expect(page.locator("#exact-sub")).toContainText("coming in a later update");
-  await expect(page.locator("#exact-actions")).toBeHidden();
+test("pull apart shows the joints", async ({ page }) => {
+  await page.locator('[data-piece="coffee_table"]').click();
+  await waitForBuild(page, 0);
+  await page.locator("#explode").click();
+  await expect(page.locator("#explode")).toHaveText("Put together");
 });

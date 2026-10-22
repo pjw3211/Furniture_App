@@ -4,8 +4,8 @@
 //
 // Returns plain shapes (see joinery/shapes.js) in the CAD frame: mm, Z up,
 // X along the length, the front faces -Y.
-import { cut } from "./joinery/shapes.js";
-import { geom, CORNERS, apronFrame, apronId, legId, movement, HOLE_CLEAR } from "./joinery/base.js";
+import { cut, add, body, cyl } from "./joinery/shapes.js";
+import { geom, CORNERS, apronFrame, apronId, legId, movement, HOLE_CLEAR, at } from "./joinery/base.js";
 import { mtHaunched, mtRounded, looseTenon, dowels, bracketBolt, pocketScrews, throughWedged, DOMINO } from "./joinery/legApron.js";
 import { buttonGroove, makeButton, zClipKerf, makeZClip, makeFigure8, makeCornerBlock } from "./joinery/top.js";
 
@@ -24,6 +24,11 @@ export const TOP_FIXINGS = [
   { id: "figure-8", name: "Figure-8 fasteners", desc: "Sit flush in the top of the aprons and swivel as the top moves." },
   { id: "blocks", name: "Corner blocks", desc: "Glued into each corner, with one screw through a slot." },
 ];
+// Joints a peg can go through: a tenon or a loose tenon that sits in the leg.
+export const PEGGABLE = new Set(["mt-haunched", "mt-router", "domino"]);
+// Cylinder across an apron's thickness (local y) from b0 to b1.
+const cylA2 = (A, a, b0, b1, z, r) => cyl(at(A.F, [a, b0, z]), at(A.F, [a, b1, z]), r);
+
 export const DEFAULT_JOINT = "mt-haunched", DEFAULT_TOP_FIX = "buttons";
 
 const SPECIES = { walnut: "walnut", teak: "teak", oak: "white_oak", rosewood: "rosewood" };
@@ -44,17 +49,46 @@ export function unavailable(s, key, id) {
   return null;
 }
 
+// Domino size, heights (from the apron's middle) and depth into the leg.
+function dominoPlan(g) {
+  const size = g.apron_t >= 17 && g.apron_h >= 40 ? "8x40" : "5x30", D = DOMINO[size];
+  const usable = g.apron_h - 12, sp = Math.min(34, usable - D.w);
+  const heights = usable >= 2 * D.w + 6 ? [-sp / 2, sp / 2] : [0];
+  // Go less deep into the leg if the other apron's Domino is in the way.
+  const e = Math.min(D.l / 2, g.meet - D.t / 2 - HOLE_CLEAR - 1.5);
+  return { size, D, heights, e };
+}
+
+export const PEG_D = 6.35; // ¼ in dowel
+
+// Where a peg crosses a joint, in the apron frame: a = how far into the leg,
+// z = height, t = thickness of what it passes through, and which loose
+// tenon (by index) it goes through, if any. The long and short aprons' pegs
+// sit at different heights so they pass each other inside the leg.
+function pegSpot(id, g, which) {
+  const r = PEG_D / 2, up = which === "long" ? 1 : -1;
+  if (id === "domino") {
+    const { D, heights, e } = dominoPlan(g);
+    const a = Math.min(Math.max(e / 2, r + 1.5), e - r - 1.5);
+    if (a < r + 1.5) return null;
+    const i = heights.length > 1 ? (up > 0 ? heights.length - 1 : 0) : 0;
+    const dz = heights.length > 1 ? 0 : up * Math.max(0, Math.min(4, D.w / 2 - D.t / 2 - r));
+    return { a, z: g.apron_mid + heights[i] + dz, t: D.t, tenon: i };
+  }
+  const tt = Math.min(9.525, g.apron_t / 2);
+  let zt = g.apron_top - 9.525, zb = g.apron_top - g.apron_h + 9.525;
+  if (id === "mt-haunched") { zt = g.apron_top - Math.min(9.525, g.apron_h * 0.2); zb = g.apron_top - g.apron_h + Math.min(9.525, g.apron_h * 0.15); }
+  const dz = up * Math.max(0, Math.min(8, (zt - zb) / 2 - r - 2));
+  return { a: Math.min(12.7, g.meet / 2), z: (zt + zb) / 2 + dz, t: tt };
+}
+
 // Joint recipe for one corner, sized to the table. A new one per corner,
 // because the bracket joint adds its bracket and bolt once per corner.
 function jointFor(id, g, notes) {
   const half = g.apron_h / 2;
   if (id === "mt-router") return mtRounded({ tenon_t: Math.min(9.525, g.apron_t / 2) });
   if (id === "domino") {
-    const size = g.apron_t >= 17 && g.apron_h >= 40 ? "8x40" : "5x30", D = DOMINO[size];
-    const usable = g.apron_h - 12, sp = Math.min(34, usable - D.w);
-    const heights = usable >= 2 * D.w + 6 ? [-sp / 2, sp / 2] : [0];
-    // Go less deep into the leg if the other apron's Domino is in the way.
-    const e = Math.min(D.l / 2, g.meet - D.t / 2 - HOLE_CLEAR - 1.5);
+    const { size, heights, e } = dominoPlan(g);
     if (e < 10) notes.add("The legs are thin for these aprons, so the Dominoes only go " + e.toFixed(0) + " mm into the legs.");
     return looseTenon({ size, heights: { long: heights, short: heights }, leg_depth: e });
   }
@@ -142,7 +176,19 @@ export function tableJoinery(s) {
   for (const c of CORNERS) {
     const joint = jointFor(useJoint, g, notes), extra = [], cj = [];
     for (const which of ["long", "short"]) {
-      const j = joint(g, c, which, apronFrame(g, c, which));
+      const A = apronFrame(g, c, which), j = joint(g, c, which, A);
+      const spot = s.pegs && PEGGABLE.has(useJoint) ? pegSpot(useJoint, g, which) : null;
+      if (spot) {
+        // From the leg's outside face, through the tenon, stopping inside the leg.
+        const out = -A.ins * (g.apron_set + g.apron_t / 2), end = A.ins * (spot.t / 2 + 4);
+        const hole = cylA2(A, spot.a, out - A.ins * 0.5, end + A.ins, spot.z, PEG_D / 2 + HOLE_CLEAR);
+        const peg = body(`peg-${which}`, "Dowel peg ¼ in", "tenon", [add(cylA2(A, spot.a, out, end, spot.z, PEG_D / 2))], { material: "maple" });
+        j.leg.push(hole);
+        const through = spot.tenon === undefined ? null : j.extra[spot.tenon];
+        if (through) through.steps.push(cut(hole)); else j.apron.push(cut(hole));
+        j.extra = [...(j.extra || []), peg];
+        j.joints = [...(j.joints || []), { type: "peg", parts: [through ? through.id : apronId(c, which), legId(c)], via: [peg.id] }];
+      } else if (s.pegs) notes.add("These joints are too small for pegs, so the table is made without them.");
       apron[apronId(c, which)].push(...j.apron);
       leg[legId(c)].push(...j.leg);
       extra.push(...(j.extra || []));

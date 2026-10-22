@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Mid-century furniture designer: design pieces, arrange a room, export parts.",
+  "description": "Mid-century coffee table designer: pick options, export flat DXF parts and a PDF cut list.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,7 +13,7 @@
     "joinery:specs": "node scripts/joinery-specs.mjs"
   },
   "dependencies": {
-    "fflate": "^0.8.2",
+    "jspdf": "^2.5.2",
     "replicad": "^1.1.0",
     "replicad-opencascadejs": "^1.1.0",
     "three": "0.160.0"
