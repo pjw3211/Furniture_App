@@ -4,6 +4,7 @@ This can't check Fusion's geometry, but it catches Python mistakes and
 spec fields the script doesn't understand, on every model and profile.
 Run: python3 tests/fusion/mock_run.py
 """
+import builtins
 import importlib.util
 import os
 import sys
@@ -34,6 +35,17 @@ fusion.Design.cast.return_value = design
 tbm = Fake(name="tbm")
 fusion.TemporaryBRepManager.get.return_value = tbm
 tbm.booleanOperation.side_effect = lambda *a: calls.__setitem__("booleans", calls["booleans"] + 1) or True
+
+# Like real Fusion: a direct-modelling design has no user parameters.
+type(design).userParameters = mock.PropertyMock(side_effect=RuntimeError("3 : this is not a parametric design"))
+
+# Like Windows: text files opened without an encoding are read as cp1252.
+_open = builtins.open
+def windows_open(file, mode="r", *a, **kw):
+    if "b" not in mode and "encoding" not in kw and len(a) < 2:
+        kw["encoding"] = "cp1252"
+    return _open(file, mode, *a, **kw)
+builtins.open = windows_open
 
 sys.dont_write_bytecode = True
 spec = importlib.util.spec_from_file_location("build_joinery", SCRIPT)

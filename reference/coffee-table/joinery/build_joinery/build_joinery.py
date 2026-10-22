@@ -253,19 +253,33 @@ class Builder:
         return found
 
 
-def add_params(design, m, log):
-    up = design.userParameters
-    prefix = "".join(ch if ch.isalnum() else "_" for ch in m["id"])
-    if not prefix[0].isalpha():
-        prefix = "m_" + prefix
+def add_params(design, comp, m, log):
+    # Direct-modelling designs have no user parameters, so list the sizes in
+    # the component description and the log instead.
+    lines = []
     for p in m.get("params", []):
-        name = prefix + "_" + p["name"]
         unit = p.get("unit", "mm")
-        expr = "%s %s" % (p["value"], unit) if unit else str(p["value"])
+        lines.append("%s = %s%s%s" % (p["name"], p["value"], " " + unit if unit else "",
+                                       "  (%s)" % p["note"] if p.get("note") else ""))
+    if not lines:
+        return
+    log.extend("  " + l for l in lines)
+    if design.designType == adsk.fusion.DesignTypes.ParametricDesignType:
+        prefix = "".join(ch if ch.isalnum() else "_" for ch in m["id"])
+        if not prefix[0].isalpha():
+            prefix = "m_" + prefix
+        for p in m.get("params", []):
+            unit = p.get("unit", "mm")
+            expr = "%s %s" % (p["value"], unit) if unit else str(p["value"])
+            try:
+                design.userParameters.add(prefix + "_" + p["name"], adsk.core.ValueInput.createByString(expr), unit, p.get("note", ""))
+            except Exception as e:
+                log.append("  parameter %s not added: %s" % (p["name"], e))
+    else:
         try:
-            up.add(name, adsk.core.ValueInput.createByString(expr), unit, p.get("note", ""))
-        except Exception as e:
-            log.append("  parameter %s not added: %s" % (name, e))
+            comp.description = (comp.description + "\n" if comp.description else "") + "\n".join(lines)
+        except Exception:
+            pass
 
 
 def build_model(bld, m, index, log):
@@ -323,7 +337,7 @@ def main():
     global _app, _ui
     _app = adsk.core.Application.get()
     _ui = _app.userInterface
-    with open(os.path.join(SPEC_DIR, "index.json")) as fh:
+    with open(os.path.join(SPEC_DIR, "index.json"), encoding="utf-8") as fh:
         index = json.load(fh)
     ids = [m["id"] for m in index["models"] if not ONLY or m["id"] in ONLY]
 
@@ -339,11 +353,11 @@ def main():
     log, summary = [], []
 
     for i, mid in enumerate(ids):
-        with open(os.path.join(SPEC_DIR, mid + ".json")) as fh:
+        with open(os.path.join(SPEC_DIR, mid + ".json"), encoding="utf-8") as fh:
             m = json.load(fh)
         log.append("%s: %s" % (mid, m.get("title", "")))
         comp, failed = build_model(bld, m, i, log)
-        add_params(design, m, log)
+        add_params(design, comp, m, log)
         summary.append("%s%s" % (mid, "  (failed: %s)" % ", ".join(failed) if failed else ""))
         if EXPORT_STEP:
             try:
@@ -353,7 +367,7 @@ def main():
                 log.append("  STEP export failed:\n" + traceback.format_exc())
 
     if not ONLY:
-        with open(os.path.join(SPEC_DIR, "profiles.json")) as fh:
+        with open(os.path.join(SPEC_DIR, "profiles.json"), encoding="utf-8") as fh:
             prof = json.load(fh)
         sketches = build_profiles(bld, prof, len(ids), log)
         if EXPORT_DXF:
@@ -372,7 +386,7 @@ def main():
         except Exception:
             log.append("f3d export failed:\n" + traceback.format_exc())
 
-    with open(os.path.join(OUT_DIR, "log.txt"), "w") as fh:
+    with open(os.path.join(OUT_DIR, "log.txt"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(summary) + "\n\n" + "\n".join(log) + "\n")
     bad = [s for s in summary if "failed" in s]
     msg = "Built %d models. Files are in:\n%s" % (len(ids), OUT_DIR)
