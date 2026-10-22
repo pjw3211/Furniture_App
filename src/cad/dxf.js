@@ -83,14 +83,14 @@ const f = v => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(4);
 
 /**
  * layers: [{ name, drawing?, entities?, color }] → DXF text.
- * texts: [{ layer, at:[x,y], height, text }]
+ * texts: [{ layer, at:[x,y], height, text }]; units: $INSUNITS code
  */
-export function writeDXF(layers, texts = []) {
+export function writeDXF(layers, texts = [], { units = 4 } = {}) {
   const L = [];
   const g = (code, val) => L.push(String(code), String(val));
   g(0, "SECTION"); g(2, "HEADER");
   g(9, "$ACADVER"); g(1, "AC1009");
-  g(9, "$INSUNITS"); g(70, 4); // millimetres
+  g(9, "$INSUNITS"); g(70, units); // 4 = millimetres, 1 = inches
   g(0, "ENDSEC");
   g(0, "SECTION"); g(2, "TABLES");
   const names = new Map();

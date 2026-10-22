@@ -2,26 +2,16 @@
 // must be a real solid, nothing may overlap, and every joint must actually
 // join (tenons in mortises, dowels and screws in both parts).
 import { describe, it, expect, beforeAll } from "vitest";
-import * as THREE from "three";
-import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
-import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import { createFurniture } from "../src/furniture.js";
+import { params, preset } from "./table-params.js";
 import { buildTableSolids } from "../src/cad/table.js";
 import { JOINTS, TOP_FIXINGS, unavailable, tableJoinery } from "../src/cad/tableJoinery.js";
 import { bounds, cutList, hardwareList, cutListCSV } from "../src/cad/exports.js";
 import { overlaps, missingJoints } from "./joinery-helpers.js";
 import { loadReplicad } from "./oc-node.js";
 
-const F = createFurniture(THREE, { toCreasedNormals, RoundedBoxGeometry });
-const T = Object.fromEntries(F.types.map(t => [t.id, t]));
 let R;
 beforeAll(async () => { R = await loadReplicad(); }, 60000);
 
-function params(typeId, extra = {}) {
-  const s = { ...T[typeId].defaults, ...extra };
-  T[typeId].clamp(s);
-  return s;
-}
 
 // The app's parts in the shape the joinery checks expect.
 function check(s) {
@@ -33,6 +23,8 @@ function check(s) {
   for (const x of built) expect(R.measureVolume(x.solid), x.b.id).toBeGreaterThan(1);
   expect(overlaps(R, built), "overlapping parts").toEqual([]);
   expect(missingJoints(R, { joints }, built), "joints that don't join").toEqual([]);
+  // Free the solids: the engine's memory is shared by every test in the file.
+  for (const p of parts) p.solid.delete();
   return { parts, joints, notes };
 }
 
@@ -57,47 +49,3 @@ describe("every joint builds and joins", () => {
       }, 120000);
 });
 
-describe("every top fixing builds and joins", () => {
-  for (const [label, [type, extra]] of Object.entries(SIZES))
-    for (const f of TOP_FIXINGS)
-      it(`${f.name}, ${label}`, () => {
-        const { joints } = check(params(type, { ...extra, top_fix: f.id }));
-        expect(joints.filter(x => x.parts.includes("top")).length).toBeGreaterThanOrEqual(4);
-      }, 120000);
-  it("wooden buttons on the side table's superellipse top", () => {
-    check(params("side_table"));
-  }, 300000);
-  it("corner blocks with corner brackets: blocks give way to buttons", () => {
-    const { parts, notes } = check(params("coffee_table", { joint: "bracket", top_fix: "blocks" }));
-    expect(parts.some(p => p.name === "Button")).toBe(true);
-    expect(notes.join(" ")).toMatch(/Corner blocks can't be used/);
-  }, 120000);
-});
-
-describe("joinery details", () => {
-  it("the wedged through tenon needs deep aprons", () => {
-    expect(unavailable(params("coffee_table"), "joint", "wedged")).toBeNull();
-    expect(unavailable(params("coffee_table", { apron_h: 1.5 }), "joint", "wedged")).toMatch(/2¼ in/);
-  });
-  it("buttons: an odd number on each long apron, the middle one tight", () => {
-    const J = tableJoinery(params("coffee_table"));
-    const front = J.parts.filter(p => p.body.name === "Button" && p.body.id.includes("front"));
-    expect(front.length % 2).toBe(1);
-    expect(J.notes.join(" ")).toMatch(/move about 6\.\d mm/);
-  });
-  it("cut list has the made parts; bought parts are listed to buy", () => {
-    const { parts } = buildTableSolids(R, params("coffee_table", { joint: "domino", top_fix: "z-clips" }));
-    const rows = cutList(parts), buy = hardwareList(parts);
-    expect(rows.map(r => r.name)).toEqual(["Top", "Long apron", "Short apron", "Leg"]);
-    const q = Object.fromEntries(buy.map(r => [r.name, r.qty]));
-    expect(q["Domino 8x40"]).toBe(16);        // 2 per apron end
-    expect(q["Z-clip"]).toBe(8);              // 3 per long apron, 1 per short
-    expect(cutListCSV(rows, "Cut list", buy)).toMatch(/To buy,Qty\n.*Domino 8x40,16/s);
-  }, 120000);
-  it("buttons and wedges are made, so they are on the cut list", () => {
-    const { parts } = buildTableSolids(R, params("coffee_table", { joint: "wedged" }));
-    const names = cutList(parts).map(r => r.name);
-    expect(names).toContain("Button");
-    expect(names).toContain("Wedge");
-  }, 120000);
-});

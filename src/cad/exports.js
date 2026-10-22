@@ -15,16 +15,18 @@ export function finishedSize(solid) {
   return { length: l, width: w, thickness: t };
 }
 
-// Common hardwood thicknesses (mm), roughly 4/4 to 16/4 rough stock.
-const STOCK = [19, 22, 25, 32, 38, 44, 50, 63, 75, 100];
+// Rough hardwood is sold by the quarter inch: 4/4 is 1 in thick, 8/4 is 2 in.
+export const STOCK = [4, 5, 6, 8, 10, 12, 16].map(q => ({ name: `${q}/4`, mm: q * 6.35 }));
 export const ALLOWANCE = { length: 25, width: 6, thickness: 3 };
 
 export function roughSize(fin, allow = ALLOWANCE) {
   const tNeed = fin.thickness + allow.thickness;
+  const stock = STOCK.find(s => s.mm >= tNeed - 0.01);
   return {
     length: Math.ceil(fin.length + allow.length),
     width: Math.ceil(fin.width + allow.width),
-    thickness: STOCK.find(s => s >= tNeed) || Math.ceil(tNeed),
+    thickness: stock ? Math.round(stock.mm * 10) / 10 : Math.ceil(tNeed),
+    stock: stock ? stock.name : `${Math.ceil(tNeed)} mm`,
   };
 }
 
@@ -56,13 +58,13 @@ const inch = mm => (mm / MM).toFixed(2);
 export function cutListCSV(rows, title = "Cut list", hardware = []) {
   const out = [[title], [],
     ["Part", "Qty", "Material", "Length mm", "Width mm", "Thickness mm", "Length in", "Width in", "Thickness in",
-      "Rough length mm", "Rough width mm", "Stock thickness mm"]];
+      "Rough length mm", "Rough width mm", "Stock"]];
   for (const r of rows) {
     const f = r.finished, g = r.rough;
     out.push([r.name, r.qty, r.material, f.length.toFixed(1), f.width.toFixed(1), f.thickness.toFixed(1),
-      inch(f.length), inch(f.width), inch(f.thickness), g.length, g.width, g.thickness]);
+      inch(f.length), inch(f.width), inch(f.thickness), g.length, g.width, g.stock]);
   }
-  out.push([], [`Rough sizes add ${ALLOWANCE.length} mm to length and ${ALLOWANCE.width} mm to width; stock thickness is the next common size up.`]);
+  out.push([], [`Rough sizes add ${ALLOWANCE.length} mm to length and ${ALLOWANCE.width} mm to width; stock is the next rough thickness up (4/4 = 1 in).`]);
   if (hardware.length) out.push([], ["To buy", "Qty"], ...hardware.map(h => [h.name, h.qty]));
   return out.map(r => r.map(c => /[",]/.test(String(c)) ? `"${String(c).replace(/"/g, '""')}"` : c).join(",")).join("\n") + "\n";
 }
@@ -100,33 +102,111 @@ function moveEntities(ents, dx, dy) {
   return ents.map(e => e.type === "LINE" ? { ...e, a: m(e.a), b: m(e.b) } : { ...e, c: m(e.c) });
 }
 
+// Bounding box of DXF entities, [x0, y0, x1, y1].
+export function extent(ents) {
+  const pts = ents.flatMap(e => {
+    if (e.type === "LINE") return [e.a, e.b];
+    if (e.type === "CIRCLE") return [[e.c[0] - e.r, e.c[1] - e.r], [e.c[0] + e.r, e.c[1] + e.r]];
+    const span = ((e.end - e.start) % 360 + 360) % 360 || 360;
+    return Array.from({ length: 17 }, (_, i) => {
+      const a = (e.start + span * i / 16) * Math.PI / 180;
+      return [e.c[0] + e.r * Math.cos(a), e.c[1] + e.r * Math.sin(a)];
+    });
+  });
+  if (!pts.length) return [0, 0, 0, 0];
+  const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+
+// The views of one part, side by side from the origin: { outline, hidden, texts, w, h }.
+// Quarter turn anticlockwise about the origin.
+function turnEntities(ents) {
+  const t = p => [-p[1], p[0]];
+  return ents.map(e => e.type === "LINE" ? { ...e, a: t(e.a), b: t(e.b) }
+    : e.type === "ARC" ? { ...e, c: t(e.c), start: (e.start + 90) % 360, end: (e.end + 90) % 360 } : { ...e, c: t(e.c) });
+}
+
+function partViews(R, part, title, views = viewsFor(part), { lengthways = false } = {}) {
+  const outline = [], hidden = [], texts = [];
+  let x = 0, h = 0;
+  for (const [cam, label] of views) {
+    const v = projectView(R, part.solid, cam);
+    if (!v.visible.length) continue;
+    // Laid flat, long parts lie along X.
+    let [x0, y0, x1, y1] = extent(v.visible);
+    if (lengthways && y1 - y0 > x1 - x0) {
+      v.visible = turnEntities(v.visible); v.hidden = turnEntities(v.hidden);
+      [x0, y0, x1, y1] = extent(v.visible);
+    }
+    outline.push(...moveEntities(v.visible, x - x0, -y0));
+    hidden.push(...moveEntities(v.hidden, x - x0, -y0));
+    texts.push({ at: [x, -9], height: 5, text: `${title} - ${label}` });
+    x += (x1 - x0) + 40;
+    h = Math.max(h, y1 - y0);
+  }
+  return { outline, hidden, texts, w: Math.max(0, x - 40), h };
+}
+
 /**
  * A DXF template of one part: each view's outline on OUTLINE, hidden edges
  * (mortises, the underside of a bevel) on HIDDEN, and a label. Views sit side
  * by side, starting at the origin, in mm.
  */
 export function partDXF(R, part, title) {
-  const outline = [], hiddenAll = [], texts = [];
-  let x = 0;
-  for (const [cam, label] of viewsFor(part)) {
-    const { visible, hidden } = projectView(R, part.solid, cam);
-    if (!visible.length) continue;
-    // Place by the true extent of the visible lines' end points.
-    const pts = visible.flatMap(e => e.type === "LINE" ? [e.a, e.b] : e.type === "ARC"
-      ? [e.start, e.end, (e.start + (((e.end - e.start) % 360) + 360) % 360 / 2)].map(a =>
-          [e.c[0] + e.r * Math.cos(a * Math.PI / 180), e.c[1] + e.r * Math.sin(a * Math.PI / 180)])
-      : [[e.c[0] - e.r, e.c[1] - e.r], [e.c[0] + e.r, e.c[1] + e.r]]);
-    const x0 = Math.min(...pts.map(p => p[0])), y0 = Math.min(...pts.map(p => p[1]));
-    const x1 = Math.max(...pts.map(p => p[0]));
-    outline.push(...moveEntities(visible, x - x0, -y0));
-    hiddenAll.push(...moveEntities(hidden, x - x0, -y0));
-    texts.push({ at: [x, -12], height: 6, text: `${title} - ${label} view` });
-    x += (x1 - x0) + 40;
-  }
+  const v = partViews(R, part, title);
+  for (const t of v.texts) { t.at = [t.at[0], -12]; t.height = 6; t.text += " view"; }
   const fin = finishedSize(part.solid);
-  texts.push({ at: [0, -24], height: 4,
+  v.texts.push({ at: [0, -24], height: 4,
     text: `Finished ${fin.length.toFixed(1)} x ${fin.width.toFixed(1)} x ${fin.thickness.toFixed(1)} mm. Units: mm. Hidden lines = mortises and undersides.` });
-  return writeDXF([{ name: "OUTLINE", color: 7, entities: outline }, { name: "HIDDEN", color: 8, entities: hiddenAll }], texts);
+  return writeDXF([{ name: "OUTLINE", color: 7, entities: v.outline }, { name: "HIDDEN", color: 8, entities: v.hidden }], v.texts);
+}
+
+// Laid flat: look along the part's thinnest direction. Legs, aprons and
+// shelf rails also get a second view along the next thinnest, so every
+// mortise, tenon and hole shows in true size on one of them.
+const CAM = ["right", "front", "top"], CAM_NAME = { right: "side", front: "face", top: "underside" }; // replicad's "top" looks up from below
+function flatViews(part) {
+  if (part.group === "legs") return [["front", "front"], ["right", "side"]];
+  const size = bounds(part.solid).size, order = [0, 1, 2].sort((a, b) => size[a] - size[b]);
+  const two = part.group === "legs" || part.group === "aprons" || /rail/.test(part.id);
+  const cams = (two ? order.slice(0, 2) : order.slice(0, 1)).map(k => CAM[k]);
+  return cams.map(c => [c, part.group === "aprons" && c === "top" ? "bottom edge" : CAM_NAME[c]]);
+}
+
+/**
+ * One DXF with every part you make laid flat next to each other, in rows,
+ * each labelled with its name and size. Layers: OUTLINE (cut lines), HIDDEN
+ * (mortises, holes and edges on the far side), TEXT. Millimetres, or inches
+ * when units = "in".
+ */
+export function flatLayoutDXF(R, parts, titles, { units = "mm", heading = [], rowWidth } = {}) {
+  const order = ["top", "aprons", "legs", "shelf"], rank = p => (order.indexOf(p.group) + 1) || order.length + 1;
+  const made = parts.filter(p => !p.bought).sort((a, b) => rank(a) - rank(b));
+  const blocks = made.map(p => ({ p, v: partViews(R, p, titles[p.id] || p.name, flatViews(p), { lengthways: true }) }));
+  const widest = Math.max(...blocks.map(b => b.v.w));
+  const W = rowWidth || Math.max(widest, 1800), gap = 50, label = 22;
+  const outline = [], hidden = [], texts = [];
+  let x = 0, y = 0, rowH = 0;
+  const fmt = mm => units === "in" ? `${(mm / MM).toFixed(2)} in` : `${mm.toFixed(1)} mm`;
+  // Rows run downward from y = 0, so the sheet reads top to bottom.
+  for (const { p, v } of blocks) {
+    if (x > 0 && x + v.w > W) { x = 0; y -= rowH + label + gap; rowH = 0; }
+    const oy = y - v.h; // block's bottom edge
+    outline.push(...moveEntities(v.outline, x, oy));
+    hidden.push(...moveEntities(v.hidden, x, oy));
+    for (const t of v.texts) texts.push({ ...t, at: [t.at[0] + x, oy - 9] });
+    const fin = finishedSize(p.solid);
+    texts.push({ at: [x, oy - 17], height: 3.5, text: `Finished ${fmt(fin.length)} x ${fmt(fin.width)} x ${fmt(fin.thickness)}` });
+    x += v.w + gap;
+    rowH = Math.max(rowH, v.h);
+  }
+  const head = [...heading, `Units: ${units === "in" ? "inches" : "millimetres"}. OUTLINE = cut lines, HIDDEN = mortises, holes and far-side edges.`];
+  head.forEach((t, i) => texts.push({ at: [0, 30 + (head.length - 1 - i) * 9], height: i === 0 ? 7 : 4.5, text: t }));
+  const k = units === "in" ? 1 / MM : 1;
+  const scale = e => k === 1 ? e : e.type === "LINE" ? { ...e, a: e.a.map(v => v * k), b: e.b.map(v => v * k) } : { ...e, c: e.c.map(v => v * k), r: e.r * k };
+  const T = texts.map(t => ({ ...t, at: t.at.map(v => v * k), height: t.height * k }));
+  return writeDXF([{ name: "OUTLINE", color: 7, entities: outline.map(scale) }, { name: "HIDDEN", color: 8, entities: hidden.map(scale) }], T,
+    { units: units === "in" ? 1 : 4 });
 }
 
 /** Binary STL of one part, laid at its own origin (min corner at 0,0,0). */
